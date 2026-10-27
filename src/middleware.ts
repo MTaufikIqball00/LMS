@@ -125,10 +125,16 @@ export async function middleware(request: NextRequest) {
       }
     }
   }
-  // --- Redirect logic for unauthenticated users ---
   else {
-    // If an unauthenticated user tries to access any protected path, redirect to login.
+    // If an unauthenticated user tries to access any protected path:
     if (!isPublicPath && pathname !== "/") {
+      // For API routes, return 401 Unauthorized JSON instead of HTML redirect
+      if (pathname.startsWith("/api/")) {
+        return NextResponse.json(
+          { success: false, message: "Unauthorized" },
+          { status: 401 }
+        );
+      }
       return NextResponse.redirect(new URL("/login", request.url));
     }
   }

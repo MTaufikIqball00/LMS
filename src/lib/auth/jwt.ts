@@ -1,12 +1,14 @@
 import "server-only";
 import { jwtVerify } from "jose";
 
-const secretKey = process.env.JWT_SECRET_KEY;
-const encodedKey = new TextEncoder().encode(secretKey);
-
 export async function verifyJwtToken(token: string) {
+  const secretKey = process.env.JWT_SECRET_KEY;
+  if (!secretKey) {
+    return null;
+  }
+
   try {
-    const { payload } = await jwtVerify(token, encodedKey, {
+    const { payload } = await jwtVerify(token, new TextEncoder().encode(secretKey), {
       algorithms: ["HS256"],
     });
     return payload;

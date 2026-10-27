@@ -31,7 +31,8 @@ export interface Submission {
   filename: string;
   size: number;
   mimeType: string;
-  data: Uint8Array; // In a real DB, this would be a URL to stored file
+  data?: Uint8Array; // In a real DB, this would be a URL to stored file
+  fileUrl?: string;
   submittedAt: string;
   grade: number | null;
   feedback: string | null;

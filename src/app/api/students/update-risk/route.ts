@@ -2,9 +2,18 @@ import { NextResponse } from "next/server";
 import pool from "../../../../lib/db";
 const db = pool;
 import { RowDataPacket } from "mysql2";
+import { getSession } from "../../../../lib/auth/session";
 
 export async function POST(request: Request) {
     try {
+        const session = await getSession();
+        if (!session || !["teacher", "admin_sekolah", "admin_langganan", "kepala_sekolah", "headmaster"].includes(session.role)) {
+            return NextResponse.json(
+                { success: false, message: "Unauthorized: Hanya pengajar atau admin yang dapat memperbarui data risiko" },
+                { status: 401 }
+            );
+        }
+
         const body = await request.json();
         const { data } = body; // Expecting array of { nis, risk_status, risk_score }
 

@@ -1,5 +1,12 @@
 const mysql = require('mysql2/promise');
+const crypto = require('crypto');
 require('dotenv').config({ path: '.env' });
+
+function hashPassword(password) {
+    const salt = crypto.randomBytes(16).toString('hex');
+    const hash = crypto.scryptSync(password, salt, 64).toString('hex');
+    return `scrypt:${salt}:${hash}`;
+}
 
 // ==========================================
 // DUMMY DATA PART 1 (lib/dummy-data/*.ts)
@@ -541,7 +548,7 @@ async function migrate() {
             await connection.query(
                 `INSERT INTO users (id, name, email, password, role, school_id, status, last_login, avatar)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE name=VALUES(name)`,
-                [u.id, u.name, u.email, u.password, u.role === 'school_admin' ? 'admin_sekolah' : u.role, u.schoolId, u.status, u.lastLogin ? new Date(u.lastLogin) : null, u.avatar]
+                [u.id, u.name, u.email, hashPassword(u.password), u.role === 'school_admin' ? 'admin_sekolah' : u.role, u.schoolId, u.status, u.lastLogin ? new Date(u.lastLogin) : null, u.avatar]
             );
         }
         console.log(`Seeded ${USERS.length} users.`);

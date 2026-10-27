@@ -98,7 +98,8 @@ export async function GET(request: NextRequest, context: RouteContext) {
     }];
 
     try {
-      const flaskResponse = await fetch('http://127.0.0.1:5000/api/analyze_json', {
+      const flaskBaseUrl = process.env.FLASK_SERVICE_URL || "http://127.0.0.1:5000";
+      const flaskResponse = await fetch(`${flaskBaseUrl}/api/analyze_json`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(studentPayload)
@@ -126,15 +127,16 @@ export async function GET(request: NextRequest, context: RouteContext) {
 
     } catch (e) {
       console.warn("Using fallback local calculation due to:", e);
-      // Fallback Logic
-      const rawGPA = student.gpa || (student.average_score / 25) || 0;
-      const normGPA = Math.min(Math.max(rawGPA / 4.0, 0), 1);
-      const rawAtt = student.attendance_rate || student.activity_level || 0;
-      const normAtt = Math.min(Math.max(rawAtt / 100.0, 0), 1);
-      riskScore = Number(((normGPA * 60) + (normAtt * 40)).toFixed(2));
+      // Aligned Fallback: Risk Score (0-100 where higher = higher risk)
+      const rawGPA = student.gpa != null ? Number(student.gpa) : (student.average_score ? student.average_score / 25 : 3.0);
+      const rawAtt = student.attendance_rate != null ? Number(student.attendance_rate) : 100;
+      const gpaDeficit = Math.max(0, 4.0 - Math.min(rawGPA, 4.0)) / 4.0 * 100;
+      const absenceRate = Math.max(0, 100 - Math.min(rawAtt, 100));
+      riskScore = Number(((gpaDeficit * 0.6) + (absenceRate * 0.4)).toFixed(2));
 
-      if (riskScore < 50) riskStatus = "Berisiko Tinggi";
-      else if (riskScore < 75) riskStatus = "Berisiko Sedang";
+      if (riskScore >= 60) riskStatus = "Berisiko Tinggi";
+      else if (riskScore >= 35) riskStatus = "Berisiko Sedang";
+      else riskStatus = "Aman";
     }
 
     // Construct Response

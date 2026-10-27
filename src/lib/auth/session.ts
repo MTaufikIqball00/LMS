@@ -4,11 +4,14 @@ import { jwtVerify } from "jose";
 import { cookies } from "next/headers";
 
 export interface UserSession {
-  id: string; // Changed from userId to id to match common usage
-  userId?: string; // Keep for backward compatibility if needed
-  role: "student" | "teacher" | "admin_sekolah" | "admin_langganan" | "headmaster";
+  id: string;
+  userId: string;
+  role: "student" | "teacher" | "admin_sekolah" | "admin_langganan" | "kepala_sekolah" | "headmaster";
   name: string;
   schoolId?: string;
+  school?: any;
+  grade?: number | null;
+  studentId?: string | null;
   iat: number;
   exp: number;
 }
@@ -24,13 +27,11 @@ export async function getSession(): Promise<UserSession | null> {
   const secret = process.env.JWT_SECRET_KEY;
   if (!secret) {
     console.error("JWT_SECRET_KEY is not set in environment variables.");
-    // In a real app, you'd want to handle this more gracefully
-    // For now, we'll prevent login/session validation from working.
     return null;
   }
 
   try {
-    const { payload } = await jwtVerify<UserSession>(
+    const { payload } = await jwtVerify(
       token,
       new TextEncoder().encode(secret),
       {
@@ -38,10 +39,16 @@ export async function getSession(): Promise<UserSession | null> {
       }
     );
 
-    // The payload is the user session
-    return payload;
+    const data = payload as any;
+    const resolvedId = data.id || data.userId || "";
+    const resolvedUserId = data.userId || data.id || "";
+
+    return {
+      ...data,
+      id: resolvedId,
+      userId: resolvedUserId,
+    } as UserSession;
   } catch (error) {
-    // This can happen if the token is invalid, expired, etc.
     console.error("JWT Verification failed:", error);
     return null;
   }

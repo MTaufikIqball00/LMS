@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "../../../../lib/auth/session";
 import { quizzes, Quiz, Question, AnswerChoice } from "./store";
+import pool from "../../../../lib/db";
 import { z } from "zod";
 import crypto from "crypto";
 
@@ -53,6 +54,40 @@ export async function GET(request: NextRequest) {
         { success: false, message: "Unauthorized" },
         { status: 401 }
       );
+    }
+
+    // Query from MySQL database
+    let connection;
+    try {
+      connection = await pool.getConnection();
+      const [dbQuizzes]: [any[], any] = await connection.query(
+        "SELECT * FROM quizzes WHERE teacher_id = ? ORDER BY created_at DESC",
+        [session.userId]
+      );
+
+      if (dbQuizzes && dbQuizzes.length > 0) {
+        // Sync with in-memory map
+        dbQuizzes.forEach((q: any) => {
+          if (!quizzes.has(q.id)) {
+            quizzes.set(q.id, {
+              id: q.id,
+              teacherId: q.teacher_id,
+              title: q.title,
+              description: q.description || "",
+              subject: q.subject || "Umum",
+              questions: [],
+              createdAt: q.created_at,
+              updatedAt: q.updated_at,
+              duration: q.duration || 60,
+              isActive: Boolean(q.is_active),
+            } as any);
+          }
+        });
+      }
+    } catch (dbErr) {
+      console.warn("Could not query quizzes from MySQL, using store:", dbErr);
+    } finally {
+      if (connection) connection.release();
     }
 
     const allQuizzes = Array.from(quizzes.values());
@@ -181,6 +216,48 @@ export async function POST(request: NextRequest) {
     };
 
     quizzes.set(newQuiz.id, newQuiz);
+
+    // Persist to MySQL database
+    let conn;
+    try {
+      conn = await pool.getConnection();
+      await conn.query(
+        `INSERT INTO quizzes (id, teacher_id, title, description, subject, duration, max_attempts, passing_score, is_active, created_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+          newQuiz.id,
+          session.userId,
+          newQuiz.title,
+          newQuiz.description || null,
+          newQuiz.subject,
+          newQuiz.duration || 60,
+          newQuiz.maxAttempts || 1,
+          newQuiz.passingScore || 70,
+          1,
+          new Date().toISOString().slice(0, 19).replace('T', ' '),
+        ]
+      );
+
+      for (const q of processedQuestions) {
+        await conn.query(
+          `INSERT INTO quiz_questions (id, quiz_id, question_text, question_type, points, choices, correct_answer)
+           VALUES (?, ?, ?, ?, ?, ?, ?)`,
+          [
+            q.id,
+            newQuiz.id,
+            q.questionText,
+            q.questionType,
+            q.points || 10,
+            q.choices ? JSON.stringify(q.choices) : null,
+            q.correctAnswer || null,
+          ]
+        );
+      }
+    } catch (dbErr) {
+      console.warn("Could not persist quiz to MySQL:", dbErr);
+    } finally {
+      if (conn) conn.release();
+    }
 
     console.log(
       `✅ Quiz created successfully: ${newQuiz.id} by teacher ${session.userId}`

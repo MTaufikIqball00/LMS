@@ -61,7 +61,8 @@ export async function GET(request: NextRequest) {
     // Call Flask API
     let analysisResults: any[] = [];
     try {
-      const flaskResponse = await fetch('http://127.0.0.1:5000/api/analyze_json', {
+      const flaskBaseUrl = process.env.FLASK_SERVICE_URL || "http://127.0.0.1:5000";
+      const flaskResponse = await fetch(`${flaskBaseUrl}/api/analyze_json`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(studentsForAnalysis)

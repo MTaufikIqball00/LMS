@@ -1,415 +1,591 @@
--- Database Schema for Coba App
--- Generated based on dummy-data.ts structure
+-- ========================================================
+-- Comprehensive Unified Database Schema for LMS (Learning Management System)
+-- Synchronized with All Application Routes, Models, and Seed Data
+-- ========================================================
 
+SET FOREIGN_KEY_CHECKS = 0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
---
--- Table structure for table `users`
---
+-- --------------------------------------------------------
+-- 1. Table structure for table `schools`
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `schools`;
+CREATE TABLE `schools` (
+  `id` VARCHAR(50) NOT NULL,
+  `name` VARCHAR(100) NOT NULL,
+  `address` TEXT DEFAULT NULL,
+  `city` VARCHAR(100) DEFAULT NULL,
+  `province` VARCHAR(100) DEFAULT NULL,
+  `postal_code` VARCHAR(20) DEFAULT NULL,
+  `phone` VARCHAR(20) DEFAULT NULL,
+  `email` VARCHAR(100) DEFAULT NULL,
+  `headmaster` VARCHAR(100) DEFAULT NULL,
+  `subscription_status` ENUM('active', 'limited', 'expired', 'none') DEFAULT 'active',
+  `registered_date` DATE DEFAULT NULL,
+  `logo` VARCHAR(255) DEFAULT '/assets/school-logos/default.png',
+  `level` VARCHAR(20) DEFAULT 'SMA',
+  `academic_year` VARCHAR(20) DEFAULT '2023/2024',
+  `user_capacity` INT DEFAULT 1500,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+INSERT INTO `schools` (`id`, `name`, `address`, `city`, `province`, `postal_code`, `phone`, `email`, `headmaster`, `subscription_status`, `registered_date`, `logo`, `level`, `academic_year`, `user_capacity`) VALUES
+('sch-001', 'SMA Negeri 1 Bandung', 'Jl. Ir. H. Juanda No.93', 'Bandung', 'Jawa Barat', '40132', '022-2501234', 'info@sman1bandung.sch.id', 'Dr. H. Iwan Setiawan, M.Pd.', 'active', '2022-08-15', '/assets/school-logos/sman1-bandung.png', 'SMA', '2023/2024', 1500),
+('sch-002', 'SMA Negeri 3 Jakarta', 'Jl. Setiabudi II No.1', 'Jakarta Selatan', 'DKI Jakarta', '12910', '021-5251234', 'kontak@sman3jakarta.sch.id', 'Dra. Hj. Retno Listyarti, M.Si.', 'active', '2022-09-01', '/assets/school-logos/sman3-jakarta.png', 'SMA', '2023/2024', 1200),
+('sch-003', 'SMA Negeri 5 Surabaya', 'Jl. Kusuma Bangsa No.21', 'Surabaya', 'Jawa Timur', '60272', '031-5341234', 'support@sman5surabaya.sch.id', 'Drs. H. M. Basuki, M.M.', 'limited', '2023-01-20', '/assets/school-logos/sman5-surabaya.png', 'SMA', '2023/2024', 1800),
+('sch-004', 'SMA Negeri 1 Medan', 'Jl. Teuku Cik Ditiro No.1', 'Medan', 'Sumatera Utara', '20152', '061-4511234', 'info@sman1medan.sch.id', 'Drs. H. Sabar, M.Pd.', 'limited', '2023-02-10', '/assets/school-logos/default.png', 'SMA', '2023/2024', 1200);
+
+-- --------------------------------------------------------
+-- 2. Table structure for table `users`
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
-  `id` varchar(50) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `role` enum('student','teacher','admin_langganan','admin_sekolah', 'kepala_sekolah', 'parent') NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `grade` int DEFAULT NULL,
-  `school_name` varchar(100) DEFAULT NULL,
-  `school_province` varchar(100) DEFAULT NULL,
-  `school_subscription_status` varchar(50) DEFAULT NULL,
-  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `id` VARCHAR(50) NOT NULL,
+  `name` VARCHAR(100) NOT NULL,
+  `email` VARCHAR(100) NOT NULL,
+  `password` VARCHAR(255) NOT NULL,
+  `role` ENUM('student','teacher','admin_langganan','admin_sekolah','kepala_sekolah','school_admin','parent') NOT NULL,
+  `school_id` VARCHAR(50) DEFAULT NULL,
+  `school_name` VARCHAR(100) DEFAULT NULL,
+  `school_province` VARCHAR(100) DEFAULT NULL,
+  `school_subscription_status` VARCHAR(50) DEFAULT NULL,
+  `status` ENUM('active','inactive','pending') DEFAULT 'active',
+  `last_login` DATETIME DEFAULT NULL,
+  `avatar` VARCHAR(255) DEFAULT '/assets/Avatar.png',
+  `grade` INT DEFAULT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  UNIQUE KEY `email` (`email`),
+  KEY `school_id` (`school_id`),
+  CONSTRAINT `fk_users_schools` FOREIGN KEY (`school_id`) REFERENCES `schools` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`id`, `email`, `password`, `role`, `name`, `grade`, `school_name`, `school_province`, `school_subscription_status`) VALUES
-('1', 'murid.jabar@sekolah.id', 'password123', 'student', 'Siswa Jabar (Kelas 12)', 12, 'SMA Negeri 1 Bandung', 'Jawa Barat', 'active'),
-('2', 'guru.jabar@sekolah.id', 'password123', 'teacher', 'Guru Jabar', NULL, 'SMA Negeri 1 Bandung', 'Jawa Barat', 'active'),
-('3', 'admin@langganan.id', 'password123', 'admin_langganan', 'Admin Langganan', NULL, NULL, NULL, NULL),
-('4', 'murid.luar@sekolah.id', 'password123', 'student', 'Siswa Luar Jabar (Kelas 11)', 11, 'SMA Negeri 1 Medan', 'Sumatera Utara', 'limited'),
-('5', 'murid.kelas10@sekolah.id', 'password123', 'student', 'Siswa Kelas 10', 10, 'SMA Negeri 2 Jakarta', 'DKI Jakarta', 'expired'),
-('6', 'guru.luar@sekolah.id', 'password123', 'teacher', 'Guru Luar Jabar', NULL, 'SMA Negeri 1 Medan', 'Sumatera Utara', 'limited');
+-- Default password is 'password123' hashed with scrypt
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`, `school_id`, `school_name`, `school_province`, `school_subscription_status`, `status`, `avatar`, `grade`) VALUES
+('1', 'Siswa Jabar (Kelas 12)', 'murid.jabar@sekolah.id', 'scrypt:a1b2c3d4e5f60718:727f8db552c02678ae459f0140467c684667d4a61536b753e84400ec91b283afe6db298f8ad900c1df61fd513b3149084ad81ad2b8c828380cdca0d1eadb7974', 'student', 'sch-001', 'SMA Negeri 1 Bandung', 'Jawa Barat', 'active', 'active', '/assets/Avatar.png', 12),
+('2', 'Guru Jabar', 'guru.jabar@sekolah.id', 'scrypt:a1b2c3d4e5f60718:727f8db552c02678ae459f0140467c684667d4a61536b753e84400ec91b283afe6db298f8ad900c1df61fd513b3149084ad81ad2b8c828380cdca0d1eadb7974', 'teacher', 'sch-001', 'SMA Negeri 1 Bandung', 'Jawa Barat', 'active', 'active', '/assets/Avatar2.png', NULL),
+('3', 'Admin Langganan', 'admin@langganan.id', 'scrypt:a1b2c3d4e5f60718:727f8db552c02678ae459f0140467c684667d4a61536b753e84400ec91b283afe6db298f8ad900c1df61fd513b3149084ad81ad2b8c828380cdca0d1eadb7974', 'admin_langganan', NULL, NULL, NULL, NULL, 'active', '/assets/Avatar.png', NULL),
+('4', 'Siswa Luar Jabar (Kelas 11)', 'murid.luar@sekolah.id', 'scrypt:a1b2c3d4e5f60718:727f8db552c02678ae459f0140467c684667d4a61536b753e84400ec91b283afe6db298f8ad900c1df61fd513b3149084ad81ad2b8c828380cdca0d1eadb7974', 'student', 'sch-004', 'SMA Negeri 1 Medan', 'Sumatera Utara', 'limited', 'active', '/assets/Avatar.png', 11),
+('5', 'Siswa Kelas 10', 'murid.kelas10@sekolah.id', 'scrypt:a1b2c3d4e5f60718:727f8db552c02678ae459f0140467c684667d4a61536b753e84400ec91b283afe6db298f8ad900c1df61fd513b3149084ad81ad2b8c828380cdca0d1eadb7974', 'student', 'sch-002', 'SMA Negeri 3 Jakarta', 'DKI Jakarta', 'active', 'active', '/assets/Avatar3.png', 10),
+('6', 'Guru Luar Jabar', 'guru.luar@sekolah.id', 'scrypt:a1b2c3d4e5f60718:727f8db552c02678ae459f0140467c684667d4a61536b753e84400ec91b283afe6db298f8ad900c1df61fd513b3149084ad81ad2b8c828380cdca0d1eadb7974', 'teacher', 'sch-004', 'SMA Negeri 1 Medan', 'Sumatera Utara', 'limited', 'active', '/assets/Avatar.png', NULL),
+('7', 'Kepala Sekolah Bandung', 'kepala@sekolah.id', 'scrypt:a1b2c3d4e5f60718:727f8db552c02678ae459f0140467c684667d4a61536b753e84400ec91b283afe6db298f8ad900c1df61fd513b3149084ad81ad2b8c828380cdca0d1eadb7974', 'kepala_sekolah', 'sch-001', 'SMA Negeri 1 Bandung', 'Jawa Barat', 'active', 'active', '/assets/Avatar.png', NULL),
+('8', 'Admin Sekolah Bandung', 'admin.sekolah@sekolah.id', 'scrypt:a1b2c3d4e5f60718:727f8db552c02678ae459f0140467c684667d4a61536b753e84400ec91b283afe6db298f8ad900c1df61fd513b3149084ad81ad2b8c828380cdca0d1eadb7974', 'admin_sekolah', 'sch-001', 'SMA Negeri 1 Bandung', 'Jawa Barat', 'active', 'active', '/assets/Avatar.png', NULL);
 
 -- --------------------------------------------------------
-
---
--- Table structure for table `students`
---
-
+-- 3. Table structure for table `students`
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `students`;
 CREATE TABLE `students` (
-  `id` varchar(50) NOT NULL,
-  `student_id` varchar(50) NOT NULL, -- NIM
-  `name` varchar(100) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `avatar` varchar(255) DEFAULT NULL,
-  `semester` int DEFAULT NULL,
-  `grade` int DEFAULT NULL,
-  `school_name` varchar(100) DEFAULT NULL,
-  `school_province` varchar(100) DEFAULT NULL,
-  `phone` varchar(20) DEFAULT NULL,
-  `class_name` varchar(50) DEFAULT NULL,
-  `major` varchar(100) DEFAULT NULL,
-  `enrollment_date` datetime DEFAULT NULL,
-  `status` enum('active','inactive','suspended') DEFAULT 'active',
-  `gpa` decimal(4,2) DEFAULT NULL,
-  `total_credits` int DEFAULT NULL,
-  `completed_credits` int DEFAULT NULL,
-  `address` text,
-  `parent_name` varchar(100) DEFAULT NULL,
-  `parent_phone` varchar(20) DEFAULT NULL,
-  `attendance_rate` decimal(5,2) DEFAULT NULL,
-  `assignment_completion` decimal(5,2) DEFAULT NULL,
-  `quiz_average` decimal(5,2) DEFAULT NULL,
-  `risk_status` varchar(50) DEFAULT NULL,
-  `risk_score` decimal(5,2) DEFAULT NULL,
-  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `id` VARCHAR(50) NOT NULL,
+  `user_id` VARCHAR(50) NOT NULL,
+  `student_id` VARCHAR(50) DEFAULT NULL, -- NIS / NIM
+  `nisn` VARCHAR(50) DEFAULT NULL,
+  `name` VARCHAR(100) DEFAULT NULL,
+  `email` VARCHAR(100) DEFAULT NULL,
+  `avatar` VARCHAR(255) DEFAULT '/assets/Avatar.png',
+  `semester` INT DEFAULT 1,
+  `grade` INT DEFAULT 10,
+  `school_name` VARCHAR(100) DEFAULT NULL,
+  `school_province` VARCHAR(100) DEFAULT NULL,
+  `phone` VARCHAR(20) DEFAULT NULL,
+  `class_name` VARCHAR(50) DEFAULT NULL,
+  `class` VARCHAR(50) DEFAULT NULL,
+  `major` VARCHAR(100) DEFAULT 'Umum',
+  `enrollment_date` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `status` ENUM('active','inactive','suspended') DEFAULT 'active',
+  `gpa` DECIMAL(4,2) DEFAULT 0.00,
+  `average_score` DECIMAL(5,2) DEFAULT 0.00,
+  `activity_level` INT DEFAULT 0,
+  `total_credits` INT DEFAULT 0,
+  `completed_credits` INT DEFAULT 0,
+  `address` TEXT,
+  `gender` VARCHAR(20) DEFAULT NULL,
+  `date_of_birth` DATE DEFAULT NULL,
+  `parent_name` VARCHAR(100) DEFAULT NULL,
+  `parent_phone` VARCHAR(20) DEFAULT NULL,
+  `attendance_rate` DECIMAL(5,2) DEFAULT 100.00,
+  `assignment_completion` DECIMAL(5,2) DEFAULT 100.00,
+  `quiz_average` DECIMAL(5,2) DEFAULT 0.00,
+  `risk_status` VARCHAR(50) DEFAULT 'Aman',
+  `risk_score` DECIMAL(5,2) DEFAULT 0.00,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `student_id` (`student_id`),
-  UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  KEY `user_id` (`user_id`),
+  KEY `student_id` (`student_id`),
+  CONSTRAINT `fk_students_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `students`
---
-
-INSERT INTO `students` (`id`, `student_id`, `name`, `email`, `avatar`, `semester`, `grade`, `school_name`, `school_province`, `phone`, `class_name`, `major`, `enrollment_date`, `status`, `gpa`, `total_credits`, `completed_credits`, `address`, `parent_name`, `parent_phone`, `attendance_rate`, `assignment_completion`, `quiz_average`, `created_at`, `updated_at`) VALUES
-('s1', 'NIM001', 'Budi Pekerti', 'budi.pekerti@sekolah.id', '/assets/Avatar.png', 3, 11, 'SMA Negeri 1 Jakarta', 'DKI Jakarta', '081234567890', 'Kelas 11A', 'Ilmu Pengetahuan Alam', '2023-07-15 00:00:00', 'active', 3.85, 60, 45, 'Jl. Pendidikan No. 1, Jakarta', 'Ayah Budi', '081209876543', 95.50, 98.00, 88.20, NOW(), NOW()),
-('s2', 'NIM002', 'Siti Aminah', 'siti.aminah@sekolah.id', '/assets/Avatar2.png', 5, 12, 'SMA Negeri 3 Bandung', 'Jawa Barat', '081234567891', 'Kelas 12B', 'Ilmu Pengetahuan Sosial', '2022-07-15 00:00:00', 'active', 3.92, 120, 100, 'Jl. Merdeka No. 45, Bandung', 'Ayah Siti', '081209876544', 96.00, 95.00, 91.50, NOW(), NOW()),
-('s3', 'NIM003', 'Ahmad Fadil', 'ahmad.fadil@sekolah.id', '/assets/Avatar3.png', 1, 10, 'SMA Swasta Harapan', 'Jawa Tengah', '081234567892', 'Kelas 10C', 'Ilmu Pengetahuan Alam', '2024-07-15 00:00:00', 'active', 3.65, 24, 18, 'Jl. Pemuda No. 78, Semarang', 'Ayah Ahmad', '081209876545', 93.00, 89.00, 85.00, NOW(), NOW());
+INSERT INTO `students` (`id`, `user_id`, `student_id`, `nisn`, `name`, `email`, `avatar`, `semester`, `grade`, `school_name`, `school_province`, `phone`, `class_name`, `class`, `major`, `status`, `gpa`, `average_score`, `activity_level`, `attendance_rate`, `assignment_completion`, `quiz_average`, `risk_status`, `risk_score`) VALUES
+('s1', '1', 'NIM001', '0051234567', 'Siswa Jabar (Kelas 12)', 'murid.jabar@sekolah.id', '/assets/Avatar.png', 5, 12, 'SMA Negeri 1 Bandung', 'Jawa Barat', '081234567890', 'Kelas 12A', 'Kelas 12A', 'IPA', 'active', 3.85, 88.50, 85, 95.50, 98.00, 88.20, 'Aman', 15.00),
+('s2', '4', 'NIM002', '0061234568', 'Siswa Luar Jabar (Kelas 11)', 'murid.luar@sekolah.id', '/assets/Avatar2.png', 3, 11, 'SMA Negeri 1 Medan', 'Sumatera Utara', '081234567891', 'Kelas 11B', 'Kelas 11B', 'IPS', 'active', 3.20, 75.00, 60, 90.00, 85.00, 78.50, 'Aman', 25.00),
+('s3', '5', 'NIM003', '0071234569', 'Siswa Kelas 10', 'murid.kelas10@sekolah.id', '/assets/Avatar3.png', 1, 10, 'SMA Negeri 3 Jakarta', 'DKI Jakarta', '081234567892', 'Kelas 10C', 'Kelas 10C', 'IPA', 'active', 2.80, 62.00, 40, 78.00, 70.00, 65.00, 'Berisiko Sedang', 55.00);
 
 -- --------------------------------------------------------
+-- 4. Table structure for table `teachers`
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `teachers`;
+CREATE TABLE `teachers` (
+  `id` VARCHAR(50) NOT NULL,
+  `user_id` VARCHAR(50) NOT NULL,
+  `school_id` VARCHAR(50) DEFAULT NULL,
+  `subject` VARCHAR(100) DEFAULT 'Umum',
+  `subjects` VARCHAR(100) DEFAULT 'Umum',
+  `classes` JSON DEFAULT NULL,
+  `teaching_hours` INT DEFAULT 24,
+  `status` ENUM('Active', 'Non-Active') DEFAULT 'Active',
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `fk_teachers_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Table structure for table `courses` (New)
---
+INSERT INTO `teachers` (`id`, `user_id`, `school_id`, `subject`, `subjects`, `classes`, `teaching_hours`, `status`) VALUES
+('t1', '2', 'sch-001', 'Matematika', 'Matematika', '["12A", "11B"]', 24, 'Active'),
+('t2', '6', 'sch-004', 'Fisika', 'Fisika', '["11B", "10C"]', 20, 'Active');
 
+-- --------------------------------------------------------
+-- 5. Table structure for table `courses`
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `courses`;
 CREATE TABLE `courses` (
-  `id` varchar(50) NOT NULL,
-  `code` varchar(20) NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `description` text,
-  `teacher_id` varchar(50) NOT NULL,
-  `semester` enum('ganjil', 'genap') NOT NULL,
-  `academic_year` varchar(20) NOT NULL,
-  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `id` VARCHAR(50) NOT NULL,
+  `code` VARCHAR(20) NOT NULL,
+  `name` VARCHAR(100) NOT NULL,
+  `description` TEXT,
+  `teacher_id` VARCHAR(50) NOT NULL,
+  `semester` ENUM('ganjil', 'genap') DEFAULT 'ganjil',
+  `academic_year` VARCHAR(20) DEFAULT '2023/2024',
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `code` (`code`),
   KEY `teacher_id` (`teacher_id`),
-  CONSTRAINT `courses_ibfk_1` FOREIGN KEY (`teacher_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `courses`
---
+  CONSTRAINT `fk_courses_teachers` FOREIGN KEY (`teacher_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO `courses` (`id`, `code`, `name`, `description`, `teacher_id`, `semester`, `academic_year`) VALUES
 ('c1', 'BIO101', 'Biologi Dasar', 'Pengenalan Biologi', '2', 'ganjil', '2023/2024'),
-('c2', 'MAT201', 'Matematika Lanjut', 'Kalkulus dan Aljabar', '2', 'ganjil', '2023/2024');
+('c2', 'MAT201', 'Matematika Lanjut', 'Kalkulus dan Aljabar', '2', 'ganjil', '2023/2024'),
+('c3', 'FIS101', 'Fisika Dasar', 'Mekanika dan Termodinamika', '6', 'ganjil', '2023/2024');
 
 -- --------------------------------------------------------
-
---
--- Table structure for table `enrollments` (New)
---
-
+-- 6. Table structure for table `enrollments`
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `enrollments`;
 CREATE TABLE `enrollments` (
-  `id` varchar(50) NOT NULL,
-  `student_id` varchar(50) NOT NULL,
-  `course_id` varchar(50) NOT NULL,
-  `enrolled_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `id` VARCHAR(50) NOT NULL,
+  `student_id` VARCHAR(50) NOT NULL,
+  `course_id` VARCHAR(50) NOT NULL,
+  `enrolled_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `student_id` (`student_id`),
   KEY `course_id` (`course_id`),
-  CONSTRAINT `enrollments_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `enrollments_ibfk_2` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  CONSTRAINT `fk_enrollments_students` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_enrollments_courses` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO `enrollments` (`id`, `student_id`, `course_id`) VALUES
+('en-1', 's1', 'c1'),
+('en-2', 's1', 'c2'),
+('en-3', 's2', 'c2');
 
 -- --------------------------------------------------------
-
---
--- Table structure for table `modules`
---
-
+-- 7. Table structure for table `modules`
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `modules`;
 CREATE TABLE `modules` (
-  `id` varchar(50) NOT NULL,
-  `course_id` varchar(50) DEFAULT NULL, -- Linked to course
-  `teacher_id` varchar(50) NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `description` text,
-  `type` enum('video','pdf','quiz','document') NOT NULL,
-  `content_url` text NOT NULL,
-  `file_name` varchar(255) DEFAULT NULL,
-  `file_type` varchar(50) DEFAULT NULL,
-  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `id` VARCHAR(50) NOT NULL,
+  `course_id` VARCHAR(50) DEFAULT NULL,
+  `teacher_id` VARCHAR(50) NOT NULL,
+  `title` VARCHAR(255) NOT NULL,
+  `description` TEXT,
+  `type` ENUM('video', 'pdf', 'quiz', 'document') NOT NULL DEFAULT 'document',
+  `content_url` TEXT NOT NULL,
+  `subject` VARCHAR(100) DEFAULT NULL,
+  `file_name` VARCHAR(255) DEFAULT NULL,
+  `file_type` VARCHAR(50) DEFAULT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `teacher_id` (`teacher_id`),
-  KEY `course_id` (`course_id`),
-  CONSTRAINT `modules_ibfk_1` FOREIGN KEY (`teacher_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `modules_ibfk_2` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  CONSTRAINT `fk_modules_teachers` FOREIGN KEY (`teacher_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `modules`
---
-
-INSERT INTO `modules` (`id`, `teacher_id`, `title`, `description`, `type`, `content_url`, `created_at`) VALUES
-('mod-initial-1', '2', 'Pengenalan Aljabar', 'Bab pertama dalam kurikulum matematika semester ini.', 'pdf', 'http://example.com/aljabar.pdf', NOW());
+INSERT INTO `modules` (`id`, `teacher_id`, `title`, `description`, `type`, `content_url`, `subject`, `created_at`) VALUES
+('mod-1', '2', 'Pengenalan Aljabar', 'Materi dasar aljabar semester ganjil', 'pdf', 'https://example.com/aljabar.pdf', 'Matematika', NOW()),
+('mod-2', '2', 'Kalkulus Diferensial', 'Video pengantar turunan fungsi', 'video', 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'Matematika', NOW());
 
 -- --------------------------------------------------------
-
---
--- Table structure for table `assignments` (New)
---
-
+-- 8. Table structure for table `assignments`
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `assignments`;
 CREATE TABLE `assignments` (
-  `id` varchar(50) NOT NULL,
-  `course_id` varchar(50) NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `description` text,
-  `due_date` datetime NOT NULL,
-  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `id` VARCHAR(50) NOT NULL,
+  `course_id` VARCHAR(50) DEFAULT NULL,
+  `teacher_id` VARCHAR(50) DEFAULT NULL,
+  `title` VARCHAR(255) NOT NULL,
+  `description` TEXT,
+  `subject` VARCHAR(100) DEFAULT 'Umum',
+  `target_class` VARCHAR(50) DEFAULT NULL,
+  `priority` ENUM('High', 'Medium', 'Low') DEFAULT 'Medium',
+  `due_date` DATETIME NOT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  KEY `course_id` (`course_id`),
-  CONSTRAINT `assignments_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  KEY `teacher_id` (`teacher_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO `assignments` (`id`, `teacher_id`, `title`, `description`, `subject`, `target_class`, `due_date`) VALUES
+('asg-1', '2', 'Tugas Aljabar 1', 'Kerjakan soal 1 sampai 10 di buku modul.', 'Matematika', 'Kelas 12A', DATE_ADD(NOW(), INTERVAL 7 DAY)),
+('asg-2', '2', 'Praktikum Biologi Sel', 'Laporan hasil pengamatan preparat sel bawang merah.', 'Biologi', 'Kelas 12A', DATE_ADD(NOW(), INTERVAL 5 DAY));
 
 -- --------------------------------------------------------
-
---
--- Table structure for table `submissions` (New)
---
-
+-- 9. Table structure for table `submissions`
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `submissions`;
 CREATE TABLE `submissions` (
-  `id` varchar(50) NOT NULL,
-  `assignment_id` varchar(50) NOT NULL,
-  `student_id` varchar(50) NOT NULL,
-  `file_url` text,
-  `submitted_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-  `grade` decimal(5,2) DEFAULT NULL,
-  `feedback` text,
+  `id` VARCHAR(50) NOT NULL,
+  `assignment_id` VARCHAR(50) NOT NULL,
+  `student_id` VARCHAR(50) NOT NULL,
+  `file_url` TEXT,
+  `file_name` VARCHAR(255) DEFAULT NULL,
+  `file_size` INT DEFAULT NULL,
+  `submitted_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `grade` DECIMAL(5,2) DEFAULT NULL,
+  `feedback` TEXT,
   PRIMARY KEY (`id`),
   KEY `assignment_id` (`assignment_id`),
   KEY `student_id` (`student_id`),
-  CONSTRAINT `submissions_ibfk_1` FOREIGN KEY (`assignment_id`) REFERENCES `assignments` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `submissions_ibfk_2` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  CONSTRAINT `fk_submissions_assignments` FOREIGN KEY (`assignment_id`) REFERENCES `assignments` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
-
---
--- Table structure for table `quizzes` (New)
---
-
+-- 10. Table structure for table `quizzes`
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `quizzes`;
 CREATE TABLE `quizzes` (
-  `id` varchar(50) NOT NULL,
-  `course_id` varchar(50) NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `description` text,
-  `duration_minutes` int NOT NULL,
-  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `id` VARCHAR(50) NOT NULL,
+  `course_id` VARCHAR(50) DEFAULT NULL,
+  `teacher_id` VARCHAR(50) NOT NULL,
+  `title` VARCHAR(255) NOT NULL,
+  `description` TEXT,
+  `subject` VARCHAR(100) DEFAULT 'Umum',
+  `duration` INT NOT NULL DEFAULT 60,
+  `max_attempts` INT DEFAULT 1,
+  `passing_score` INT DEFAULT 70,
+  `is_active` BOOLEAN DEFAULT TRUE,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  KEY `course_id` (`course_id`),
-  CONSTRAINT `quizzes_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  KEY `teacher_id` (`teacher_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO `quizzes` (`id`, `teacher_id`, `title`, `description`, `subject`, `duration`, `is_active`) VALUES
+('quiz-1', '2', 'Kuis Kalkulus Bab 1', 'Evaluasi pemahaman konsep turunan fungsi', 'Matematika', 45, TRUE);
 
 -- --------------------------------------------------------
-
---
--- Table structure for table `quiz_questions` (New)
---
-
+-- 11. Table structure for table `quiz_questions`
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `quiz_questions`;
 CREATE TABLE `quiz_questions` (
-  `id` varchar(50) NOT NULL,
-  `quiz_id` varchar(50) NOT NULL,
-  `question_text` text NOT NULL,
-  `question_type` enum('multiple_choice', 'essay', 'true_false') NOT NULL,
-  `points` int DEFAULT 1,
+  `id` VARCHAR(50) NOT NULL,
+  `quiz_id` VARCHAR(50) NOT NULL,
+  `question_text` TEXT NOT NULL,
+  `question_type` ENUM('multiple_choice', 'essay', 'true_false') NOT NULL,
+  `points` INT DEFAULT 10,
+  `choices` JSON DEFAULT NULL,
+  `correct_answer` VARCHAR(255) DEFAULT NULL,
+  `rubric` TEXT,
   PRIMARY KEY (`id`),
   KEY `quiz_id` (`quiz_id`),
-  CONSTRAINT `quiz_questions_ibfk_1` FOREIGN KEY (`quiz_id`) REFERENCES `quizzes` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  CONSTRAINT `fk_quiz_questions_quizzes` FOREIGN KEY (`quiz_id`) REFERENCES `quizzes` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
-
---
--- Table structure for table `quiz_attempts` (New)
---
-
+-- 12. Table structure for table `quiz_attempts`
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `quiz_attempts`;
 CREATE TABLE `quiz_attempts` (
-  `id` varchar(50) NOT NULL,
-  `quiz_id` varchar(50) NOT NULL,
-  `student_id` varchar(50) NOT NULL,
-  `score` decimal(5,2) DEFAULT NULL,
-  `started_at` datetime NOT NULL,
-  `completed_at` datetime DEFAULT NULL,
+  `id` VARCHAR(50) NOT NULL,
+  `quiz_id` VARCHAR(50) NOT NULL,
+  `student_id` VARCHAR(50) NOT NULL,
+  `score` DECIMAL(5,2) DEFAULT NULL,
+  `answers` JSON DEFAULT NULL,
+  `started_at` DATETIME NOT NULL,
+  `completed_at` DATETIME DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `quiz_id` (`quiz_id`),
   KEY `student_id` (`student_id`),
-  CONSTRAINT `quiz_attempts_ibfk_1` FOREIGN KEY (`quiz_id`) REFERENCES `quizzes` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `quiz_attempts_ibfk_2` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  CONSTRAINT `fk_quiz_attempts_quizzes` FOREIGN KEY (`quiz_id`) REFERENCES `quizzes` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_quiz_attempts_students` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
-
---
--- Table structure for table `grades`
---
-
+-- 13. Table structure for table `grades`
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `grades`;
 CREATE TABLE `grades` (
-  `id` varchar(50) NOT NULL,
-  `student_id` varchar(50) NOT NULL,
-  `subject` varchar(100) NOT NULL,
-  `type` varchar(50) NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `score` decimal(5,2) NOT NULL,
-  `max_score` decimal(5,2) NOT NULL,
-  `percentage` decimal(5,2) NOT NULL,
-  `grade_letter` varchar(5) NOT NULL,
-  `submitted_at` datetime DEFAULT NULL,
-  `graded_at` datetime DEFAULT NULL,
+  `id` VARCHAR(50) NOT NULL,
+  `student_id` VARCHAR(50) NOT NULL,
+  `subject` VARCHAR(100) NOT NULL,
+  `type` VARCHAR(50) NOT NULL,
+  `title` VARCHAR(255) NOT NULL,
+  `score` DECIMAL(5,2) NOT NULL,
+  `max_score` DECIMAL(5,2) DEFAULT 100.00,
+  `percentage` DECIMAL(5,2) DEFAULT 0.00,
+  `grade_letter` VARCHAR(5) DEFAULT 'A',
+  `submitted_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `graded_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `student_id` (`student_id`),
-  CONSTRAINT `grades_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  CONSTRAINT `fk_grades_students` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `grades`
---
-
-INSERT INTO `grades` (`id`, `student_id`, `subject`, `type`, `title`, `score`, `max_score`, `percentage`, `grade_letter`, `submitted_at`, `graded_at`) VALUES
-('g1', 's1', 'Fisika', 'Tugas', 'Hukum Newton', 90.00, 100.00, 90.00, 'A', '2024-05-10 08:00:00', '2024-05-12 14:00:00'),
-('g2', 's1', 'Matematika', 'Kuis', 'Kalkulus Dasar', 85.00, 100.00, 85.00, 'A-', '2024-05-11 09:00:00', '2024-05-11 15:00:00'),
-('g3', 's2', 'Kimia', 'Tugas', 'Struktur Atom', 88.00, 100.00, 88.00, 'A-', '2024-05-12 08:00:00', '2024-05-14 14:00:00'),
-('g4', 's2', 'Biologi', 'Kuis', 'Sistem Sel', 92.00, 100.00, 92.00, 'A', '2024-05-13 09:00:00', '2024-05-13 15:00:00');
+INSERT INTO `grades` (`id`, `student_id`, `subject`, `type`, `title`, `score`, `max_score`, `percentage`, `grade_letter`, `submitted_at`) VALUES
+('g1', 's1', 'Fisika', 'Tugas', 'Hukum Newton', 90.00, 100.00, 90.00, 'A', NOW()),
+('g2', 's1', 'Matematika', 'Kuis', 'Kalkulus Dasar', 85.00, 100.00, 85.00, 'A-', NOW()),
+('g3', 's2', 'Kimia', 'Tugas', 'Struktur Atom', 88.00, 100.00, 88.00, 'A-', NOW()),
+('g4', 's2', 'Biologi', 'Kuis', 'Sistem Sel', 92.00, 100.00, 92.00, 'A', NOW()),
+('g5', 's3', 'Matematika', 'Tugas', 'Aljabar', 65.00, 100.00, 65.00, 'C', NOW());
 
 -- --------------------------------------------------------
-
---
--- Table structure for table `attendance`
---
-
+-- 14. Table structure for table `attendance`
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `attendance`;
 CREATE TABLE `attendance` (
-  `id` varchar(50) NOT NULL,
-  `student_id` varchar(50) NOT NULL,
-  `date` datetime NOT NULL,
-  `status` enum('present','absent','late','excused','permission','sick','early_leave') NOT NULL,
-  `subject` varchar(100) NOT NULL,
-  `check_in_time` time DEFAULT NULL,
-  `check_out_time` time DEFAULT NULL,
-  `location_lat` decimal(10,8) DEFAULT NULL,
-  `location_lng` decimal(11,8) DEFAULT NULL,
-  `location_address` text,
-  `notes` text,
-  `method` enum('qr_code','manual','geolocation','face_recognition') DEFAULT 'manual',
+  `id` VARCHAR(50) NOT NULL,
+  `student_id` VARCHAR(50) NOT NULL,
+  `date` DATETIME NOT NULL,
+  `status` ENUM('present','absent','late','excused','permission','sick','early_leave') NOT NULL DEFAULT 'present',
+  `subject` VARCHAR(100) NOT NULL DEFAULT 'General',
+  `check_in_time` TIME DEFAULT NULL,
+  `check_out_time` TIME DEFAULT NULL,
+  `location_lat` DECIMAL(10,8) DEFAULT NULL,
+  `location_lng` DECIMAL(11,8) DEFAULT NULL,
+  `location_address` TEXT,
+  `notes` TEXT,
+  `method` ENUM('qr_code','manual','geolocation','face_recognition') DEFAULT 'manual',
+  `semester` VARCHAR(50) DEFAULT 'Ganjil 2024',
   PRIMARY KEY (`id`),
   KEY `student_id` (`student_id`),
-  CONSTRAINT `attendance_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `attendance`
---
+  CONSTRAINT `fk_attendance_students` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO `attendance` (`id`, `student_id`, `date`, `status`, `subject`, `check_in_time`, `location_address`, `notes`) VALUES
-('att1', 's1', '2024-05-20 00:00:00', 'present', 'Fisika', '08:05:12', 'Ruang Kelas 11A', 'Tepat waktu'),
-('att2', 's1', '2024-05-19 00:00:00', 'late', 'Matematika', '09:15:30', 'Ruang Kelas 11A', 'Terlambat 15 menit'),
-('att3', 's2', '2024-05-20 00:00:00', 'present', 'Kimia', '08:03:00', 'Ruang Kelas 11A', 'Tepat waktu'),
-('att4', 's2', '2024-05-19 00:00:00', 'absent', 'Biologi', '08:00:00', 'Ruang Kelas 11A', 'Sakit');
+('att1', 's1', NOW(), 'present', 'Fisika', '08:05:00', 'Ruang Kelas 12A', 'Hadir tepat waktu'),
+('att2', 's1', DATE_SUB(NOW(), INTERVAL 1 DAY), 'late', 'Matematika', '09:15:00', 'Ruang Kelas 12A', 'Terlambat 15 menit'),
+('att3', 's2', NOW(), 'present', 'Kimia', '08:03:00', 'Ruang Kelas 11B', 'Hadir tepat waktu'),
+('att4', 's3', NOW(), 'absent', 'Matematika', NULL, NULL, 'Alpa tanpa keterangan');
 
 -- --------------------------------------------------------
-
---
--- Table structure for table `activities`
---
-
+-- 15. Table structure for table `activities`
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `activities`;
 CREATE TABLE `activities` (
-  `id` varchar(50) NOT NULL,
-  `student_id` varchar(50) NOT NULL,
-  `type` varchar(50) NOT NULL,
-  `timestamp` datetime NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `description` text,
-  `metadata` json DEFAULT NULL,
+  `id` VARCHAR(50) NOT NULL,
+  `student_id` VARCHAR(50) NOT NULL,
+  `type` VARCHAR(50) NOT NULL,
+  `timestamp` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `title` VARCHAR(255) NOT NULL,
+  `description` TEXT,
+  `metadata` JSON DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `student_id` (`student_id`),
-  CONSTRAINT `activities_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  CONSTRAINT `fk_activities_students` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `activities`
---
-
-INSERT INTO `activities` (`id`, `student_id`, `type`, `timestamp`, `title`, `description`) VALUES
-('act1', 's1', 'assignment_submit', '2024-05-10 08:00:00', 'Tugas Fisika Dikumpulkan', 'Menyerahkan tugas tentang Hukum Newton.'),
-('act2', 's1', 'quiz_complete', '2024-05-11 09:30:00', 'Kuis Matematika Selesai', 'Menyelesaikan kuis Kalkulus Dasar dengan skor 85.'),
-('act3', 's1', 'login', '2024-05-20 07:55:00', 'Login ke Sistem', 'Login dari perangkat seluler.'),
-('act4', 's2', 'assignment_submit', '2024-05-12 08:00:00', 'Tugas Kimia Dikumpulkan', 'Menyerahkan tugas tentang Struktur Atom.'),
-('act5', 's2', 'quiz_complete', '2024-05-13 09:30:00', 'Kuis Biologi Selesai', 'Menyelesaikan kuis Sistem Sel dengan skor 92.'),
-('act6', 's2', 'login', '2024-05-20 07:58:00', 'Login ke Sistem', 'Login dari perangkat desktop.');
+INSERT INTO `activities` (`id`, `student_id`, `type`, `title`, `description`) VALUES
+('act1', 's1', 'assignment_submit', 'Tugas Fisika Dikumpulkan', 'Menyerahkan tugas Hukum Newton'),
+('act2', 's1', 'quiz_complete', 'Kuis Matematika Selesai', 'Menyelesaikan kuis kalkulus dasar dengan skor 85'),
+('act3', 's2', 'login', 'Login ke Sistem', 'Siswa aktif');
 
 -- --------------------------------------------------------
+-- 16. Table structure for table `forum_rooms`
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `forum_rooms`;
+CREATE TABLE `forum_rooms` (
+  `id` VARCHAR(50) NOT NULL,
+  `name` VARCHAR(100) NOT NULL,
+  `subject` VARCHAR(100) DEFAULT NULL,
+  `class_id` VARCHAR(50) DEFAULT NULL,
+  `call_id` VARCHAR(100) DEFAULT NULL,
+  `participants` INT DEFAULT 0,
+  `is_active` BOOLEAN DEFAULT TRUE,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Table structure for table `forum_threads` (New)
---
+INSERT INTO `forum_rooms` (`id`, `name`, `subject`, `class_id`, `call_id`, `participants`, `is_active`) VALUES
+('umum-general', 'Forum Umum', 'umum', 'general', 'general-meeting', 120, TRUE),
+('matematika', 'Matematika', 'matematika', NULL, 'matematika-main-call', 45, TRUE),
+('fisika', 'Fisika', 'fisika', NULL, 'fisika-main-call', 30, TRUE);
 
+-- --------------------------------------------------------
+-- 17. Table structure for table `forum_threads`
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `forum_threads`;
 CREATE TABLE `forum_threads` (
-  `id` varchar(50) NOT NULL,
-  `course_id` varchar(50) NOT NULL,
-  `author_id` varchar(50) NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `content` text NOT NULL,
-  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `id` VARCHAR(50) NOT NULL,
+  `course_id` VARCHAR(50) DEFAULT NULL,
+  `author_id` VARCHAR(50) NOT NULL,
+  `author_name` VARCHAR(100) DEFAULT NULL,
+  `title` VARCHAR(255) NOT NULL,
+  `content` TEXT NOT NULL,
+  `zoom_link` VARCHAR(255) DEFAULT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  KEY `course_id` (`course_id`),
   KEY `author_id` (`author_id`),
-  CONSTRAINT `forum_threads_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `forum_threads_ibfk_2` FOREIGN KEY (`author_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  CONSTRAINT `fk_forum_threads_authors` FOREIGN KEY (`author_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO `forum_threads` (`id`, `author_id`, `author_name`, `title`, `content`) VALUES
+('th-1', '2', 'Guru Jabar', 'Diskusi Bab 1: Aljabar Linear', 'Silakan ajukan pertanyaan seputar materi aljabar linear pada thread ini.');
 
 -- --------------------------------------------------------
-
---
--- Table structure for table `forum_posts` (New)
---
-
+-- 18. Table structure for table `forum_posts`
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `forum_posts`;
 CREATE TABLE `forum_posts` (
-  `id` varchar(50) NOT NULL,
-  `thread_id` varchar(50) NOT NULL,
-  `author_id` varchar(50) NOT NULL,
-  `content` text NOT NULL,
-  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `id` VARCHAR(50) NOT NULL,
+  `thread_id` VARCHAR(50) NOT NULL,
+  `author_id` VARCHAR(50) NOT NULL,
+  `author_name` VARCHAR(100) DEFAULT NULL,
+  `content` TEXT NOT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `thread_id` (`thread_id`),
   KEY `author_id` (`author_id`),
-  CONSTRAINT `forum_posts_ibfk_1` FOREIGN KEY (`thread_id`) REFERENCES `forum_threads` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `forum_posts_ibfk_2` FOREIGN KEY (`author_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  CONSTRAINT `fk_forum_posts_threads` FOREIGN KEY (`thread_id`) REFERENCES `forum_threads` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_forum_posts_authors` FOREIGN KEY (`author_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO `forum_posts` (`id`, `thread_id`, `author_id`, `author_name`, `content`) VALUES
+('pst-1', 'th-1', '1', 'Siswa Jabar (Kelas 12)', 'Pak, bagaimana cara cepat menentukan determinan matriks 3x3?');
 
 -- --------------------------------------------------------
+-- 19. Table structure for table `packages`
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `packages`;
+CREATE TABLE `packages` (
+  `id` VARCHAR(50) NOT NULL,
+  `name` VARCHAR(100) NOT NULL,
+  `description` TEXT,
+  `price` DECIMAL(12,2) NOT NULL DEFAULT 0.00,
+  `duration` VARCHAR(50) DEFAULT '1 Tahun',
+  `features` JSON DEFAULT NULL,
+  `max_users` INT DEFAULT 500,
+  `type` VARCHAR(50) DEFAULT 'Standard',
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Table structure for table `notifications` (New)
---
+INSERT INTO `packages` (`id`, `name`, `description`, `price`, `duration`, `features`, `max_users`, `type`) VALUES
+('pkg-basic', 'Paket Basic', 'Akses LMS esensial untuk sekolah kecil', 5000000.00, '1 Tahun', '["Dashboard Guru & Siswa", "Modul Belajar", "Forum Diskusi"]', 500, 'Basic'),
+('pkg-pro', 'Paket Pro', 'LMS komprehensif dengan AI Early Warning & Video Call', 12000000.00, '1 Tahun', '["Semua Fitur Basic", "AI Early Warning System", "Stream Video Call Terintegrasi", "Tryout Online"]', 2000, 'Pro');
 
+-- --------------------------------------------------------
+-- 20. Table structure for table `payments`
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `payments`;
+CREATE TABLE `payments` (
+  `id` VARCHAR(50) NOT NULL,
+  `school_id` VARCHAR(50) NOT NULL,
+  `amount` DECIMAL(12,2) NOT NULL,
+  `date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` VARCHAR(50) DEFAULT 'success',
+  `method` VARCHAR(50) DEFAULT 'Bank Transfer',
+  `invoice_url` VARCHAR(255) DEFAULT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `school_id` (`school_id`),
+  CONSTRAINT `fk_payments_schools` FOREIGN KEY (`school_id`) REFERENCES `schools` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO `payments` (`id`, `school_id`, `amount`, `status`, `method`) VALUES
+('pay-001', 'sch-001', 12000000.00, 'success', 'Bank Transfer BCA'),
+('pay-002', 'sch-002', 12000000.00, 'success', 'Bank Transfer Mandiri');
+
+-- --------------------------------------------------------
+-- 21. Table structure for table `subscriptions`
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `subscriptions`;
+CREATE TABLE `subscriptions` (
+  `id` VARCHAR(50) NOT NULL,
+  `school_id` VARCHAR(50) NOT NULL,
+  `package_id` VARCHAR(50) NOT NULL,
+  `start_date` DATE NOT NULL,
+  `end_date` DATE NOT NULL,
+  `status` VARCHAR(50) DEFAULT 'active',
+  `auto_renew` BOOLEAN DEFAULT TRUE,
+  `payment_status` VARCHAR(50) DEFAULT 'paid',
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `school_id` (`school_id`),
+  KEY `package_id` (`package_id`),
+  CONSTRAINT `fk_sub_schools` FOREIGN KEY (`school_id`) REFERENCES `schools` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_sub_packages` FOREIGN KEY (`package_id`) REFERENCES `packages` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO `subscriptions` (`id`, `school_id`, `package_id`, `start_date`, `end_date`, `status`, `payment_status`) VALUES
+('sub-001', 'sch-001', 'pkg-pro', '2023-01-01', '2024-01-01', 'active', 'paid'),
+('sub-002', 'sch-002', 'pkg-pro', '2023-02-01', '2024-02-01', 'active', 'paid');
+
+-- --------------------------------------------------------
+-- 22. Table structure for table `tryouts`
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `tryouts`;
+CREATE TABLE `tryouts` (
+  `id` VARCHAR(50) NOT NULL,
+  `title` VARCHAR(255) NOT NULL,
+  `subject` VARCHAR(100) NOT NULL,
+  `duration` INT NOT NULL DEFAULT 90,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO `tryouts` (`id`, `title`, `subject`, `duration`) VALUES
+('tryout-matematika-01', 'Tryout UTBK - Matematika Dasar', 'Matematika', 90),
+('tryout-fisika-01', 'Tryout UTBK - Fisika', 'Fisika', 90);
+
+-- --------------------------------------------------------
+-- 23. Table structure for table `tryout_questions`
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `tryout_questions`;
+CREATE TABLE `tryout_questions` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `tryout_id` VARCHAR(50) NOT NULL,
+  `question` TEXT NOT NULL,
+  `options` JSON NOT NULL,
+  `correct_answer` VARCHAR(255) NOT NULL,
+  `points` INT DEFAULT 10,
+  KEY `tryout_id` (`tryout_id`),
+  CONSTRAINT `fk_tryout_questions_tryouts` FOREIGN KEY (`tryout_id`) REFERENCES `tryouts` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO `tryout_questions` (`tryout_id`, `question`, `options`, `correct_answer`, `points`) VALUES
+('tryout-matematika-01', 'Jika x + 2 = 5, berapa nilai dari 2x + 1?', '["5", "6", "7", "8"]', '7', 10),
+('tryout-matematika-01', 'Turunan pertama dari f(x) = 3x^2 + 4x - 5 adalah...', '["6x + 4", "3x + 4", "6x - 5", "3x^2 + 4"]', '6x + 4', 10);
+
+-- --------------------------------------------------------
+-- 24. Table structure for table `notifications`
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `notifications`;
 CREATE TABLE `notifications` (
-  `id` varchar(50) NOT NULL,
-  `user_id` varchar(50) NOT NULL,
-  `type` enum('success','error','warning','info') NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `message` text NOT NULL,
-  `is_read` boolean DEFAULT FALSE,
-  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `id` VARCHAR(50) NOT NULL,
+  `user_id` VARCHAR(50) NOT NULL,
+  `type` ENUM('success','error','warning','info') NOT NULL DEFAULT 'info',
+  `title` VARCHAR(255) NOT NULL,
+  `message` TEXT NOT NULL,
+  `is_read` BOOLEAN DEFAULT FALSE,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
-  CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  CONSTRAINT `fk_notifications_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+INSERT INTO `notifications` (`id`, `user_id`, `type`, `title`, `message`) VALUES
+('notif-1', '1', 'info', 'Selamat Datang', 'Selamat datang di portal Learning Management System.');
+
+SET FOREIGN_KEY_CHECKS = 1;
 COMMIT;

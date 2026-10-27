@@ -1,6 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
 import { getSession } from "../../../../lib/auth/session";
 import { assignments, Assignment } from "../../../../app/api/tugas/store";
+import pool from "../../../../lib/db";
 import { z } from "zod";
 import crypto from "crypto";
 
@@ -83,6 +84,31 @@ export async function POST(request: NextRequest) {
     };
 
     assignments.set(newAssignment.id, newAssignment);
+
+    // Persist to MySQL database
+    let conn;
+    try {
+      conn = await pool.getConnection();
+      const formattedDueDate = new Date(dueDate).toISOString().slice(0, 19).replace('T', ' ');
+      await conn.query(
+        `INSERT INTO assignments (id, teacher_id, title, description, subject, target_class, priority, due_date)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+          newAssignment.id,
+          session.userId,
+          title,
+          description,
+          subject,
+          targetClass,
+          json.priority || "Medium",
+          formattedDueDate,
+        ]
+      );
+    } catch (dbErr) {
+      console.warn("Could not persist assignment to MySQL:", dbErr);
+    } finally {
+      if (conn) conn.release();
+    }
 
     return NextResponse.json(
       {

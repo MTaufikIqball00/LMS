@@ -16,17 +16,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // ✅ Get userId from request body OR session
-    let userId = session.userId;
+    // Strictly derive user from verified session to prevent impersonation
+    const userId = session.userId || session.id;
 
-    // Optional: Allow override from request body
     try {
       const body = await request.json();
-      if (body.userId) {
-        userId = body.userId;
+      if (body.userId && body.userId !== userId && session.role !== "admin_langganan") {
+        return NextResponse.json(
+          { error: "Forbidden: Cannot request video token for another user" },
+          { status: 403 }
+        );
       }
     } catch {
-      // If no body or invalid JSON, use session userId
+      // Body is optional; continue with session userId
     }
 
     const apiKey = process.env.NEXT_PUBLIC_STREAM_API_KEY;

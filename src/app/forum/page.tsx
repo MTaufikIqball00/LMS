@@ -36,7 +36,7 @@ export default async function ForumHomePage() {
   // Fetch rooms from DB
   let roomsToShow: Room[] = [];
   try {
-    const [rows]: [any[], any] = await pool.query("SELECT * FROM forum_rooms WHERE is_active = 1");
+    const [rows]: [any[], any] = await pool.query("SELECT * FROM forum_rooms WHERE is_active = TRUE");
     roomsToShow = rows.map((row: any) => ({
       id: row.id,
       name: row.name,

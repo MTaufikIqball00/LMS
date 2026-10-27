@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { SignJWT } from "jose";
 import { cookies } from "next/headers";
 import pool from "../../../lib/db";
+import { verifyPassword } from "../../../lib/auth/password";
 
 export async function POST(request: NextRequest) {
   let connection;
@@ -32,8 +33,8 @@ export async function POST(request: NextRequest) {
 
     const user = userRows[0];
 
-    // Simple password check (In production, use bcrypt/argon2)
-    if (user.password !== password) {
+    // Secure password verification (supports scrypt and legacy passwords)
+    if (!verifyPassword(password, user.password)) {
       return NextResponse.json(
         { success: false, message: "Email atau password salah" },
         { status: 401 }
@@ -43,11 +44,15 @@ export async function POST(request: NextRequest) {
     // 2. Find School Details
     let school = null;
     if (user.school_id) {
-      const [schoolRows]: [any[], any] = await connection.query(
-        `SELECT * FROM schools WHERE id = ?`,
-        [user.school_id]
-      );
-      if (schoolRows.length > 0) school = schoolRows[0];
+      try {
+        const [schoolRows]: [any[], any] = await connection.query(
+          `SELECT * FROM schools WHERE id = ?`,
+          [user.school_id]
+        );
+        if (schoolRows.length > 0) school = schoolRows[0];
+      } catch (err) {
+        console.warn("Could not fetch school details:", err);
+      }
     }
 
     // 3. Find Student Details (if applicable)
@@ -55,25 +60,29 @@ export async function POST(request: NextRequest) {
     let studentId: string | null = null;
 
     if (user.role === "student") {
-      const [studentRows]: [any[], any] = await connection.query(
-        `SELECT * FROM students WHERE user_id = ?`,
-        [user.id]
-      );
-      if (studentRows.length > 0) {
-        const student = studentRows[0];
-        studentId = student.id;
-        // Parse grade from class_name e.g. "12-A" -> 12
-        if (student.class_name) {
-          const match = student.class_name.match(/^(\d+)/);
-          if (match) grade = parseInt(match[1], 10);
+      try {
+        const [studentRows]: [any[], any] = await connection.query(
+          `SELECT * FROM students WHERE user_id = ? OR id = ? LIMIT 1`,
+          [user.id, user.id]
+        );
+        if (studentRows.length > 0) {
+          const student = studentRows[0];
+          studentId = student.id;
+          if (student.class_name) {
+            const match = student.class_name.match(/^(\d+)/);
+            if (match) grade = parseInt(match[1], 10);
+          }
         }
+      } catch (err) {
+        console.warn("Could not fetch student details:", err);
       }
     }
 
-    // 4. Create User Profile
+    // 4. Create Sanitized User Profile (Do not leak password hash to client)
+    const { password: _pw, ...safeUser } = user;
     const userProfile = {
-      ...user,
-      schoolId: user.school_id, // Map snake_case to camelCase
+      ...safeUser,
+      schoolId: user.school_id,
       school: school,
       grade: grade,
       studentId: studentId,
@@ -89,12 +98,14 @@ export async function POST(request: NextRequest) {
     }
 
     const payload: { [key: string]: any } = {
+      id: user.id,
       userId: user.id,
       role: user.role,
       name: user.name,
       school: school,
+      schoolId: user.school_id,
       grade: grade,
-      studentId: studentId, // Useful for queries
+      studentId: studentId,
     };
 
     const token = await new SignJWT(payload)

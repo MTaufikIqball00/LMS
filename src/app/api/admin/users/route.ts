@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "../../../../lib/auth/session";
 import pool from "../../../../lib/db";
+import { hashPassword } from "../../../../lib/auth/password";
 
 export async function GET(request: NextRequest) {
     const session = await getSession();
@@ -13,12 +14,23 @@ export async function GET(request: NextRequest) {
     let connection;
     try {
         connection = await pool.getConnection();
-        const [rows]: [any[], any] = await connection.query(`
-        SELECT u.*, s.name as school_name 
-        FROM users u 
-        LEFT JOIN schools s ON u.school_id = s.id 
-        ORDER BY u.created_at DESC
-    `);
+
+        let query = `
+            SELECT u.*, s.name as school_name 
+            FROM users u 
+            LEFT JOIN schools s ON u.school_id = s.id 
+        `;
+        const params: any[] = [];
+
+        // Multi-tenancy check: School admin can only view users from their own school
+        if (session.role === 'admin_sekolah') {
+            query += ` WHERE u.school_id = ? `;
+            params.push(session.schoolId || '');
+        }
+
+        query += ` ORDER BY u.created_at DESC `;
+
+        const [rows]: [any[], any] = await connection.query(query, params);
 
         const users = rows.map((row: any) => ({
             id: row.id,
@@ -47,28 +59,32 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
+    let connection;
     try {
         const body = await request.json();
-        // Add basic validation here
-        const connection = await pool.getConnection();
-        // Implement INSERT logic...
-        // For brevity in this step, returning mock success or implement later if needed for full CRUD.
-        // Assuming "Management" implies simple display for now, but the UI has "Tambah Pengguna".
-        // Let's implement basic INSERT.
+        const { name, email, role, schoolId, status, password } = body;
 
-        const { name, email, role, schoolId, status } = body;
+        if (!name || !email || !role) {
+            return NextResponse.json({ message: "Name, email, and role are required" }, { status: 400 });
+        }
+
+        connection = await pool.getConnection();
+
         const id = `user-${Date.now()}`;
-        const password = "password123"; // Default password
+        // Multi-tenancy: admin_sekolah can only create users for their own school
+        const effectiveSchoolId = session.role === 'admin_sekolah' ? session.schoolId : (schoolId || null);
+        const hashedPassword = hashPassword(password || "password123");
 
         await connection.query(
             `INSERT INTO users (id, name, email, password, role, school_id, status, avatar) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-            [id, name, email, password, role, schoolId || null, status, '/assets/Avatar.png']
+            [id, name, email, hashedPassword, role, effectiveSchoolId, status || 'active', '/assets/Avatar.png']
         );
 
-        connection.release();
-        return NextResponse.json({ success: true, user: { id, ...body } });
+        return NextResponse.json({ success: true, user: { id, name, email, role, schoolId: effectiveSchoolId, status } });
     } catch (error) {
         console.error("Create user error:", error);
         return NextResponse.json({ message: "Failed to create user" }, { status: 500 });
+    } finally {
+        if (connection) connection.release();
     }
 }

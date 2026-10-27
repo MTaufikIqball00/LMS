@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "../../../../lib/auth/session";
 import { submissions, type Submission } from "../store";
+import fs from "fs";
+import path from "path";
 
 const MAX_SIZE = 50 * 1024 * 1024; // 50MB
 const ALLOWED_EXT = [
@@ -118,10 +120,20 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const buffer = new Uint8Array(await file.arrayBuffer());
+    // Save uploaded file to disk instead of keeping large buffers in memory
+    const uploadDir = path.join(process.cwd(), "public", "uploads", "submissions");
+    await fs.promises.mkdir(uploadDir, { recursive: true });
+
+    const safeFilename = `${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.-]/g, "_")}`;
+    const filePath = path.join(uploadDir, safeFilename);
+    const fileUrl = `/uploads/submissions/${safeFilename}`;
+
+    const buffer = Buffer.from(await file.arrayBuffer());
+    await fs.promises.writeFile(filePath, buffer);
+
     const id = `sub_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
-    // ✅ Create submission object matching Submission interface exactly
+    // Create submission object matching Submission interface
     const newSubmission: Submission = {
       id,
       taskId,
@@ -130,10 +142,10 @@ export async function POST(req: NextRequest) {
       filename: file.name,
       size: file.size,
       mimeType: file.type || "application/octet-stream",
-      data: buffer,
+      fileUrl: fileUrl,
       submittedAt: new Date().toISOString(),
-      grade: null, // ✅ Correct property name
-      feedback: null, // ✅ All required properties included
+      grade: null,
+      feedback: null,
     };
 
     submissions.set(id, newSubmission);
