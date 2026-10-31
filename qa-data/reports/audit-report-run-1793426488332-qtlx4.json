@@ -1,0 +1,1038 @@
+{
+  "runId": "run-1793426488332-qtlx4",
+  "suiteType": "multi_role",
+  "timestamp": "2026-10-31T06:04:31.017Z",
+  "verdict": "PERLU PERBAIKAN SEBELUM PERILISAN RESMI",
+  "healthScore": 61,
+  "summary": {
+    "totalTests": 62,
+    "passed": 38,
+    "failed": 24,
+    "skipped": 0,
+    "notImplemented": 0
+  },
+  "findingsCount": {
+    "critical": 0,
+    "high": 4,
+    "medium": 0,
+    "low": 0
+  },
+  "findings": [
+    {
+      "id": "find-run-1793426488332-qtlx4-teacher_jabar-landing",
+      "run_id": "run-1793426488332-qtlx4",
+      "category": "bug",
+      "severity": "HIGH",
+      "title": "Kegagalan Navigasi Landing Page untuk Role teacher",
+      "affected_feature": "teacher Landing Page",
+      "affected_role": "teacher",
+      "reproduction_steps": "1. Login sebagai guru.jabar@sekolah.id\n2. Navigasi ke /teacher/dashboard",
+      "expected_behavior": "Halaman terbuka dengan status 200",
+      "actual_behavior": "Mengalami timeout atau redirect tak terduga",
+      "error_trace": "page.goto: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/teacher/dashboard\", waiting until \"domcontentloaded\"\u001b[22m\n\n    at BrowserRunner.auditSingleRole (C:\\Users\\taufi\\Documents\\Projects\\LMS\\qa-engine\\runners\\BrowserRunner.ts:98:39)\n    at async BrowserRunner.runMultiRoleAudit (C:\\Users\\taufi\\Documents\\Projects\\LMS\\qa-engine\\runners\\BrowserRunner.ts:39:28)\n    at async QaOrchestrator.executeSuite (C:\\Users\\taufi\\Documents\\Projects\\LMS\\qa-engine\\index.ts:60:28)",
+      "console_logs": [
+        "[CONSOLE_ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+      ],
+      "network_trace": [
+        {
+          "url": "http://localhost:3000/teacher/dashboard",
+          "method": "GET",
+          "status": 500
+        }
+      ],
+      "screenshot_path": "C:\\Users\\taufi\\Documents\\Projects\\LMS\\qa-data\\screenshots\\teacher_jabar_landing_failed_1793426546262.png",
+      "root_cause": "Komponen dashboard atau data dependency gagal termuat",
+      "root_cause_confidence": "85.00",
+      "recommended_fix": "Periksa dependensi API dashboard dan komponen fallback UI",
+      "status": "OPEN",
+      "created_at": "2026-10-31T06:02:34.228Z"
+    },
+    {
+      "id": "find-run-1793426488332-qtlx4-principal-landing",
+      "run_id": "run-1793426488332-qtlx4",
+      "category": "bug",
+      "severity": "HIGH",
+      "title": "Kegagalan Navigasi Landing Page untuk Role kepala_sekolah",
+      "affected_feature": "kepala_sekolah Landing Page",
+      "affected_role": "kepala_sekolah",
+      "reproduction_steps": "1. Login sebagai kepala@sekolah.id\n2. Navigasi ke /kepala/dashboard",
+      "expected_behavior": "Halaman terbuka dengan status 200",
+      "actual_behavior": "Mengalami timeout atau redirect tak terduga",
+      "error_trace": "page.goto: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/kepala/dashboard\", waiting until \"domcontentloaded\"\u001b[22m\n\n    at BrowserRunner.auditSingleRole (C:\\Users\\taufi\\Documents\\Projects\\LMS\\qa-engine\\runners\\BrowserRunner.ts:98:39)\n    at async BrowserRunner.runMultiRoleAudit (C:\\Users\\taufi\\Documents\\Projects\\LMS\\qa-engine\\runners\\BrowserRunner.ts:39:28)\n    at async QaOrchestrator.executeSuite (C:\\Users\\taufi\\Documents\\Projects\\LMS\\qa-engine\\index.ts:60:28)",
+      "console_logs": [
+        "[CONSOLE_ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+      ],
+      "network_trace": [
+        {
+          "url": "http://localhost:3000/kepala/dashboard",
+          "method": "GET",
+          "status": 500
+        }
+      ],
+      "screenshot_path": "C:\\Users\\taufi\\Documents\\Projects\\LMS\\qa-data\\screenshots\\principal_landing_failed_1793426591885.png",
+      "root_cause": "Komponen dashboard atau data dependency gagal termuat",
+      "root_cause_confidence": "85.00",
+      "recommended_fix": "Periksa dependensi API dashboard dan komponen fallback UI",
+      "status": "OPEN",
+      "created_at": "2026-10-31T06:03:14.130Z"
+    },
+    {
+      "id": "find-run-1793426488332-qtlx4-school_admin-landing",
+      "run_id": "run-1793426488332-qtlx4",
+      "category": "bug",
+      "severity": "HIGH",
+      "title": "Kegagalan Navigasi Landing Page untuk Role admin_sekolah",
+      "affected_feature": "admin_sekolah Landing Page",
+      "affected_role": "admin_sekolah",
+      "reproduction_steps": "1. Login sebagai admin.sekolah@sekolah.id\n2. Navigasi ke /admin-sekolah/dashboard",
+      "expected_behavior": "Halaman terbuka dengan status 200",
+      "actual_behavior": "Mengalami timeout atau redirect tak terduga",
+      "error_trace": "Error: Gagal mendarat di /admin-sekolah/dashboard. Berada di: http://localhost:3000/admin-sekolah/dashboard (Status: 500)\n    at BrowserRunner.auditSingleRole (C:\\Users\\taufi\\Documents\\Projects\\LMS\\qa-engine\\runners\\BrowserRunner.ts:119:17)\n    at runNextTicks (node:internal/process/task_queues:65:5)\n    at process.processImmediate (node:internal/timers:472:9)\n    at async BrowserRunner.runMultiRoleAudit (C:\\Users\\taufi\\Documents\\Projects\\LMS\\qa-engine\\runners\\BrowserRunner.ts:39:28)\n    at async QaOrchestrator.executeSuite (C:\\Users\\taufi\\Documents\\Projects\\LMS\\qa-engine\\index.ts:60:28)",
+      "console_logs": [
+        "[CONSOLE_ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+        "[CONSOLE_ERROR] ./node_modules/react-icons/fi/index.mjs:2:1\nModule not found: Can't resolve '../lib/index.mjs'\n  1 | // THIS FILE IS AUTO GENERATED\n> 2 | import { GenIcon } from '../lib/index.mjs';\n    | ^\n  3 | export function FiActivity (props) {\n  4 |   return GenIcon({\"tag\":\"svg\",\"attr\":{\"viewBox\":\"0 0 24 24\",\"fill\":\"none\",\"stroke\":\"currentColor\",\"strokeWidth\":\"2\",\"strokeLinecap\":\"round\",\"strokeLinejoin\":\"round\"},\"child\":[{\"tag\":\"polyline\",\"attr\":{\"points\":\"22 12 18 12 15 21 9 3 6 12 2 12\"},\"child\":[]}]})(props);\n  5 | };\n\nhttps://nextjs.org/docs/messages/module-not-found\n\nImport trace for requested module:\n__barrel_optimize__?names=FiArrowLeft,FiArrowRight,FiBook,FiCheck,FiDownload,FiEye,FiFile,FiFileText,FiLink,FiPlayCircle,FiPlus,FiTrash2,FiUpload,FiVideo,FiX!=!./node_modules/react-icons/fi/index.mjs\n./src/app/components/admin/ModuleManager.tsx"
+      ],
+      "network_trace": [
+        {
+          "url": "http://localhost:3000/admin-sekolah/dashboard",
+          "method": "GET",
+          "status": 500
+        }
+      ],
+      "screenshot_path": "C:\\Users\\taufi\\Documents\\Projects\\LMS\\qa-data\\screenshots\\school_admin_landing_failed_1793426618766.png",
+      "root_cause": "Komponen dashboard atau data dependency gagal termuat",
+      "root_cause_confidence": "85.00",
+      "recommended_fix": "Periksa dependensi API dashboard dan komponen fallback UI",
+      "status": "OPEN",
+      "created_at": "2026-10-31T06:03:39.891Z"
+    },
+    {
+      "id": "find-run-1793426488332-qtlx4-super_admin-landing",
+      "run_id": "run-1793426488332-qtlx4",
+      "category": "bug",
+      "severity": "HIGH",
+      "title": "Kegagalan Navigasi Landing Page untuk Role admin_langganan",
+      "affected_feature": "admin_langganan Landing Page",
+      "affected_role": "admin_langganan",
+      "reproduction_steps": "1. Login sebagai admin@langganan.id\n2. Navigasi ke /admin/langganan",
+      "expected_behavior": "Halaman terbuka dengan status 200",
+      "actual_behavior": "Mengalami timeout atau redirect tak terduga",
+      "error_trace": "Error: Gagal mendarat di /admin/langganan. Berada di: http://localhost:3000/admin/langganan (Status: 500)\n    at BrowserRunner.auditSingleRole (C:\\Users\\taufi\\Documents\\Projects\\LMS\\qa-engine\\runners\\BrowserRunner.ts:119:17)\n    at runNextTicks (node:internal/process/task_queues:65:5)\n    at process.processImmediate (node:internal/timers:472:9)\n    at async BrowserRunner.runMultiRoleAudit (C:\\Users\\taufi\\Documents\\Projects\\LMS\\qa-engine\\runners\\BrowserRunner.ts:39:28)\n    at async QaOrchestrator.executeSuite (C:\\Users\\taufi\\Documents\\Projects\\LMS\\qa-engine\\index.ts:60:28)",
+      "console_logs": [
+        "[CONSOLE_ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+        "[CONSOLE_ERROR] ./node_modules/react-icons/fi/index.mjs:2:1\nModule not found: Can't resolve '../lib/index.mjs'\n  1 | // THIS FILE IS AUTO GENERATED\n> 2 | import { GenIcon } from '../lib/index.mjs';\n    | ^\n  3 | export function FiActivity (props) {\n  4 |   return GenIcon({\"tag\":\"svg\",\"attr\":{\"viewBox\":\"0 0 24 24\",\"fill\":\"none\",\"stroke\":\"currentColor\",\"strokeWidth\":\"2\",\"strokeLinecap\":\"round\",\"strokeLinejoin\":\"round\"},\"child\":[{\"tag\":\"polyline\",\"attr\":{\"points\":\"22 12 18 12 15 21 9 3 6 12 2 12\"},\"child\":[]}]})(props);\n  5 | };\n\nhttps://nextjs.org/docs/messages/module-not-found\n\nImport trace for requested module:\n__barrel_optimize__?names=FiAlertTriangle,FiAward,FiTrendingDown,FiTrendingUp,FiUserCheck,FiUsers!=!./node_modules/react-icons/fi/index.mjs\n./src/app/kepala/dashboard/page.tsx"
+      ],
+      "network_trace": [
+        {
+          "url": "http://localhost:3000/admin/langganan",
+          "method": "GET",
+          "status": 500
+        }
+      ],
+      "screenshot_path": "C:\\Users\\taufi\\Documents\\Projects\\LMS\\qa-data\\screenshots\\super_admin_landing_failed_1793426645636.png",
+      "root_cause": "Komponen dashboard atau data dependency gagal termuat",
+      "root_cause_confidence": "85.00",
+      "recommended_fix": "Periksa dependensi API dashboard dan komponen fallback UI",
+      "status": "OPEN",
+      "created_at": "2026-10-31T06:04:06.747Z"
+    }
+  ],
+  "results": [
+    {
+      "id": "res-run-1793426488332-qtlx4-student_jabar-landing",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "Browser Multi-Role",
+      "test_name": "Navigasi Landing Page [student] -> /dashboard",
+      "feature_name": "student Dashboard",
+      "role": "student",
+      "status": "PASSED",
+      "duration_ms": 2188,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T06:01:36.345Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-student_jabar-_dashboard",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "Browser Multi-Role",
+      "test_name": "Akses Halaman Diizinkan [student] -> /dashboard",
+      "feature_name": "/dashboard",
+      "role": "student",
+      "status": "PASSED",
+      "duration_ms": 1504,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T06:01:37.950Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-student_jabar-_attendance",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "Browser Multi-Role",
+      "test_name": "Akses Halaman Diizinkan [student] -> /attendance",
+      "feature_name": "/attendance",
+      "role": "student",
+      "status": "PASSED",
+      "duration_ms": 5213,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T06:01:43.254Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-student_jabar-_matapelajaran",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "Browser Multi-Role",
+      "test_name": "Akses Halaman Diizinkan [student] -> /matapelajaran",
+      "feature_name": "/matapelajaran",
+      "role": "student",
+      "status": "PASSED",
+      "duration_ms": 3526,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T06:01:46.876Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-student_jabar-_tugas",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "Browser Multi-Role",
+      "test_name": "Akses Halaman Diizinkan [student] -> /tugas",
+      "feature_name": "/tugas",
+      "role": "student",
+      "status": "PASSED",
+      "duration_ms": 2835,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T06:01:49.808Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-student_jabar-_tryout",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "Browser Multi-Role",
+      "test_name": "Akses Halaman Diizinkan [student] -> /tryout",
+      "feature_name": "/tryout",
+      "role": "student",
+      "status": "PASSED",
+      "duration_ms": 2451,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T06:01:52.353Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-student_jabar-rbac-_teacher_dashboard",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "RBAC Access Control",
+      "test_name": "Penolakan Akses Terlarang [student] -> /teacher/dashboard",
+      "feature_name": "Middleware RBAC Guard",
+      "role": "student",
+      "status": "PASSED",
+      "duration_ms": 687,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T06:01:53.143Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-student_jabar-rbac-_teacher_assignment",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "RBAC Access Control",
+      "test_name": "Penolakan Akses Terlarang [student] -> /teacher/assignment",
+      "feature_name": "Middleware RBAC Guard",
+      "role": "student",
+      "status": "PASSED",
+      "duration_ms": 510,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T06:01:53.744Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-student_jabar-rbac-_teacher_quizzes",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "RBAC Access Control",
+      "test_name": "Penolakan Akses Terlarang [student] -> /teacher/quizzes",
+      "feature_name": "Middleware RBAC Guard",
+      "role": "student",
+      "status": "PASSED",
+      "duration_ms": 525,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T06:01:54.361Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-student_non_jabar-landing",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "Browser Multi-Role",
+      "test_name": "Navigasi Landing Page [student] -> /dashboard",
+      "feature_name": "student Dashboard",
+      "role": "student",
+      "status": "PASSED",
+      "duration_ms": 607,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T06:01:55.241Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-student_non_jabar-_dashboard",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "Browser Multi-Role",
+      "test_name": "Akses Halaman Diizinkan [student] -> /dashboard",
+      "feature_name": "/dashboard",
+      "role": "student",
+      "status": "PASSED",
+      "duration_ms": 631,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T06:01:55.964Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-student_non_jabar-_attendance",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "Browser Multi-Role",
+      "test_name": "Akses Halaman Diizinkan [student] -> /attendance",
+      "feature_name": "/attendance",
+      "role": "student",
+      "status": "PASSED",
+      "duration_ms": 645,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T06:01:56.699Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-student_non_jabar-_matapelajaran",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "Browser Multi-Role",
+      "test_name": "Akses Halaman Diizinkan [student] -> /matapelajaran",
+      "feature_name": "/matapelajaran",
+      "role": "student",
+      "status": "PASSED",
+      "duration_ms": 745,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T06:01:57.537Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-student_non_jabar-_tugas",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "Browser Multi-Role",
+      "test_name": "Akses Halaman Diizinkan [student] -> /tugas",
+      "feature_name": "/tugas",
+      "role": "student",
+      "status": "PASSED",
+      "duration_ms": 507,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T06:01:58.134Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-student_non_jabar-_nilai",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "Browser Multi-Role",
+      "test_name": "Akses Halaman Diizinkan [student] -> /nilai",
+      "feature_name": "/nilai",
+      "role": "student",
+      "status": "PASSED",
+      "duration_ms": 3519,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T06:02:01.744Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-student_non_jabar-rbac-_tryout",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "RBAC Access Control",
+      "test_name": "Penolakan Akses Terlarang [student] -> /tryout",
+      "feature_name": "Middleware RBAC Guard",
+      "role": "student",
+      "status": "PASSED",
+      "duration_ms": 2424,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T06:02:04.259Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-student_non_jabar-rbac-_forum",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "RBAC Access Control",
+      "test_name": "Penolakan Akses Terlarang [student] -> /forum",
+      "feature_name": "Middleware RBAC Guard",
+      "role": "student",
+      "status": "PASSED",
+      "duration_ms": 402,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T06:02:04.755Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-student_non_jabar-rbac-_teacher_dashboard",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "RBAC Access Control",
+      "test_name": "Penolakan Akses Terlarang [student] -> /teacher/dashboard",
+      "feature_name": "Middleware RBAC Guard",
+      "role": "student",
+      "status": "PASSED",
+      "duration_ms": 648,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T06:02:05.494Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-student_grade_10-landing",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "Browser Multi-Role",
+      "test_name": "Navigasi Landing Page [student] -> /dashboard",
+      "feature_name": "student Dashboard",
+      "role": "student",
+      "status": "PASSED",
+      "duration_ms": 711,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T06:02:06.475Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-student_grade_10-_dashboard",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "Browser Multi-Role",
+      "test_name": "Akses Halaman Diizinkan [student] -> /dashboard",
+      "feature_name": "/dashboard",
+      "role": "student",
+      "status": "PASSED",
+      "duration_ms": 466,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T06:02:07.030Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-student_grade_10-_attendance",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "Browser Multi-Role",
+      "test_name": "Akses Halaman Diizinkan [student] -> /attendance",
+      "feature_name": "/attendance",
+      "role": "student",
+      "status": "PASSED",
+      "duration_ms": 468,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T06:02:07.596Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-student_grade_10-_matapelajaran",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "Browser Multi-Role",
+      "test_name": "Akses Halaman Diizinkan [student] -> /matapelajaran",
+      "feature_name": "/matapelajaran",
+      "role": "student",
+      "status": "PASSED",
+      "duration_ms": 646,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T06:02:08.334Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-student_grade_10-_tugas",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "Browser Multi-Role",
+      "test_name": "Akses Halaman Diizinkan [student] -> /tugas",
+      "feature_name": "/tugas",
+      "role": "student",
+      "status": "PASSED",
+      "duration_ms": 582,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T06:02:09.009Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-student_grade_10-_nilai",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "Browser Multi-Role",
+      "test_name": "Akses Halaman Diizinkan [student] -> /nilai",
+      "feature_name": "/nilai",
+      "role": "student",
+      "status": "PASSED",
+      "duration_ms": 784,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T06:02:09.884Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-student_grade_10-rbac-_tryout",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "RBAC Access Control",
+      "test_name": "Penolakan Akses Terlarang [student] -> /tryout",
+      "feature_name": "Middleware RBAC Guard",
+      "role": "student",
+      "status": "PASSED",
+      "duration_ms": 435,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T06:02:10.410Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-student_grade_10-rbac-_teacher_dashboard",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "RBAC Access Control",
+      "test_name": "Penolakan Akses Terlarang [student] -> /teacher/dashboard",
+      "feature_name": "Middleware RBAC Guard",
+      "role": "student",
+      "status": "PASSED",
+      "duration_ms": 519,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T06:02:11.019Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-student_grade_10-rbac-_admin_langganan",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "RBAC Access Control",
+      "test_name": "Penolakan Akses Terlarang [student] -> /admin/langganan",
+      "feature_name": "Middleware RBAC Guard",
+      "role": "student",
+      "status": "PASSED",
+      "duration_ms": 502,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T06:02:11.612Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-teacher_jabar-landing",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "Browser Multi-Role",
+      "test_name": "Navigasi Landing Page [teacher] -> /teacher/dashboard",
+      "feature_name": "teacher Dashboard",
+      "role": "teacher",
+      "status": "FAILED",
+      "duration_ms": 21594,
+      "error_message": "page.goto: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/teacher/dashboard\", waiting until \"domcontentloaded\"\u001b[22m\n",
+      "evidence": {
+        "consoleLogs": [
+          "[CONSOLE_ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+        ],
+        "networkErrors": [
+          {
+            "url": "http://localhost:3000/teacher/dashboard",
+            "method": "GET",
+            "status": 500
+          }
+        ],
+        "screenshotPath": "C:\\Users\\taufi\\Documents\\Projects\\LMS\\qa-data\\screenshots\\teacher_jabar_landing_failed_1793426546262.png"
+      },
+      "created_at": "2026-10-31T06:02:34.135Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-teacher_jabar-_teacher_dashboard",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "Browser Multi-Role",
+      "test_name": "Akses Halaman Diizinkan [teacher] -> /teacher/dashboard",
+      "feature_name": "/teacher/dashboard",
+      "role": "teacher",
+      "status": "FAILED",
+      "duration_ms": 3165,
+      "error_message": "Akses diizinkan terblokir atau terlempar ke login: URL saat ini http://localhost:3000/teacher/dashboard",
+      "evidence": {
+        "screenshotPath": "C:\\Users\\taufi\\Documents\\Projects\\LMS\\qa-data\\screenshots\\teacher_jabar_permitted__teacher_dashboard_1793426556159.png"
+      },
+      "created_at": "2026-10-31T06:02:37.482Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-teacher_jabar-_teacher_modules",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "Browser Multi-Role",
+      "test_name": "Akses Halaman Diizinkan [teacher] -> /teacher/modules",
+      "feature_name": "/teacher/modules",
+      "role": "teacher",
+      "status": "FAILED",
+      "duration_ms": 5887,
+      "error_message": "Akses diizinkan terblokir atau terlempar ke login: URL saat ini http://localhost:3000/teacher/modules",
+      "evidence": {
+        "screenshotPath": "C:\\Users\\taufi\\Documents\\Projects\\LMS\\qa-data\\screenshots\\teacher_jabar_permitted__teacher_modules_1793426562502.png"
+      },
+      "created_at": "2026-10-31T06:02:43.460Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-teacher_jabar-_teacher_assignment",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "Browser Multi-Role",
+      "test_name": "Akses Halaman Diizinkan [teacher] -> /teacher/assignment",
+      "feature_name": "/teacher/assignment",
+      "role": "teacher",
+      "status": "FAILED",
+      "duration_ms": 3068,
+      "error_message": "Akses diizinkan terblokir atau terlempar ke login: URL saat ini http://localhost:3000/teacher/assignment",
+      "evidence": {
+        "screenshotPath": "C:\\Users\\taufi\\Documents\\Projects\\LMS\\qa-data\\screenshots\\teacher_jabar_permitted__teacher_assignment_1793426565525.png"
+      },
+      "created_at": "2026-10-31T06:02:46.620Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-teacher_jabar-_teacher_quizzes",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "Browser Multi-Role",
+      "test_name": "Akses Halaman Diizinkan [teacher] -> /teacher/quizzes",
+      "feature_name": "/teacher/quizzes",
+      "role": "teacher",
+      "status": "FAILED",
+      "duration_ms": 4343,
+      "error_message": "Akses diizinkan terblokir atau terlempar ke login: URL saat ini http://localhost:3000/teacher/quizzes",
+      "evidence": {
+        "screenshotPath": "C:\\Users\\taufi\\Documents\\Projects\\LMS\\qa-data\\screenshots\\teacher_jabar_permitted__teacher_quizzes_1793426569847.png"
+      },
+      "created_at": "2026-10-31T06:02:51.061Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-teacher_jabar-_teacher_attendance",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "Browser Multi-Role",
+      "test_name": "Akses Halaman Diizinkan [teacher] -> /teacher/attendance",
+      "feature_name": "/teacher/attendance",
+      "role": "teacher",
+      "status": "FAILED",
+      "duration_ms": 3301,
+      "error_message": "Akses diizinkan terblokir atau terlempar ke login: URL saat ini http://localhost:3000/teacher/attendance",
+      "evidence": {
+        "screenshotPath": "C:\\Users\\taufi\\Documents\\Projects\\LMS\\qa-data\\screenshots\\teacher_jabar_permitted__teacher_attendance_1793426573371.png"
+      },
+      "created_at": "2026-10-31T06:02:54.453Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-teacher_jabar-rbac-_dashboard",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "RBAC Access Control",
+      "test_name": "Penolakan Akses Terlarang [teacher] -> /dashboard",
+      "feature_name": "Middleware RBAC Guard",
+      "role": "teacher",
+      "status": "PASSED",
+      "duration_ms": 876,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T06:02:55.419Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-teacher_jabar-rbac-_attendance",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "RBAC Access Control",
+      "test_name": "Penolakan Akses Terlarang [teacher] -> /attendance",
+      "feature_name": "Middleware RBAC Guard",
+      "role": "teacher",
+      "status": "PASSED",
+      "duration_ms": 858,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T06:02:56.368Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-teacher_jabar-rbac-_tryout",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "RBAC Access Control",
+      "test_name": "Penolakan Akses Terlarang [teacher] -> /tryout",
+      "feature_name": "Middleware RBAC Guard",
+      "role": "teacher",
+      "status": "PASSED",
+      "duration_ms": 791,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T06:02:57.249Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-principal-landing",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "Browser Multi-Role",
+      "test_name": "Navigasi Landing Page [kepala_sekolah] -> /kepala/dashboard",
+      "feature_name": "kepala_sekolah Dashboard",
+      "role": "kepala_sekolah",
+      "status": "FAILED",
+      "duration_ms": 15846,
+      "error_message": "page.goto: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/kepala/dashboard\", waiting until \"domcontentloaded\"\u001b[22m\n",
+      "evidence": {
+        "consoleLogs": [
+          "[CONSOLE_ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+        ],
+        "networkErrors": [
+          {
+            "url": "http://localhost:3000/kepala/dashboard",
+            "method": "GET",
+            "status": 500
+          }
+        ],
+        "screenshotPath": "C:\\Users\\taufi\\Documents\\Projects\\LMS\\qa-data\\screenshots\\principal_landing_failed_1793426591885.png"
+      },
+      "created_at": "2026-10-31T06:03:14.005Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-principal-_kepala_dashboard",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "Browser Multi-Role",
+      "test_name": "Akses Halaman Diizinkan [kepala_sekolah] -> /kepala/dashboard",
+      "feature_name": "/kepala/dashboard",
+      "role": "kepala_sekolah",
+      "status": "FAILED",
+      "duration_ms": 2118,
+      "error_message": "Akses diizinkan terblokir atau terlempar ke login: URL saat ini http://localhost:3000/kepala/dashboard",
+      "evidence": {
+        "screenshotPath": "C:\\Users\\taufi\\Documents\\Projects\\LMS\\qa-data\\screenshots\\principal_permitted__kepala_dashboard_1793426595236.png"
+      },
+      "created_at": "2026-10-31T06:03:16.339Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-principal-_kepala_leaderboard",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "Browser Multi-Role",
+      "test_name": "Akses Halaman Diizinkan [kepala_sekolah] -> /kepala/leaderboard",
+      "feature_name": "/kepala/leaderboard",
+      "role": "kepala_sekolah",
+      "status": "FAILED",
+      "duration_ms": 4378,
+      "error_message": "Akses diizinkan terblokir atau terlempar ke login: URL saat ini http://localhost:3000/kepala/leaderboard",
+      "evidence": {
+        "screenshotPath": "C:\\Users\\taufi\\Documents\\Projects\\LMS\\qa-data\\screenshots\\principal_permitted__kepala_leaderboard_1793426599837.png"
+      },
+      "created_at": "2026-10-31T06:03:20.809Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-principal-_kepala_reports",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "Browser Multi-Role",
+      "test_name": "Akses Halaman Diizinkan [kepala_sekolah] -> /kepala/reports",
+      "feature_name": "/kepala/reports",
+      "role": "kepala_sekolah",
+      "status": "FAILED",
+      "duration_ms": 3114,
+      "error_message": "Akses diizinkan terblokir atau terlempar ke login: URL saat ini http://localhost:3000/kepala/reports",
+      "evidence": {
+        "screenshotPath": "C:\\Users\\taufi\\Documents\\Projects\\LMS\\qa-data\\screenshots\\principal_permitted__kepala_reports_1793426602971.png"
+      },
+      "created_at": "2026-10-31T06:03:24.013Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-principal-_kepala_teachers",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "Browser Multi-Role",
+      "test_name": "Akses Halaman Diizinkan [kepala_sekolah] -> /kepala/teachers",
+      "feature_name": "/kepala/teachers",
+      "role": "kepala_sekolah",
+      "status": "FAILED",
+      "duration_ms": 3063,
+      "error_message": "Akses diizinkan terblokir atau terlempar ke login: URL saat ini http://localhost:3000/kepala/teachers",
+      "evidence": {
+        "screenshotPath": "C:\\Users\\taufi\\Documents\\Projects\\LMS\\qa-data\\screenshots\\principal_permitted__kepala_teachers_1793426606160.png"
+      },
+      "created_at": "2026-10-31T06:03:27.170Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-principal-_kepala_students",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "Browser Multi-Role",
+      "test_name": "Akses Halaman Diizinkan [kepala_sekolah] -> /kepala/students",
+      "feature_name": "/kepala/students",
+      "role": "kepala_sekolah",
+      "status": "FAILED",
+      "duration_ms": 3066,
+      "error_message": "Akses diizinkan terblokir atau terlempar ke login: URL saat ini http://localhost:3000/kepala/students",
+      "evidence": {
+        "screenshotPath": "C:\\Users\\taufi\\Documents\\Projects\\LMS\\qa-data\\screenshots\\principal_permitted__kepala_students_1793426609254.png"
+      },
+      "created_at": "2026-10-31T06:03:30.354Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-principal-rbac-_dashboard",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "RBAC Access Control",
+      "test_name": "Penolakan Akses Terlarang [kepala_sekolah] -> /dashboard",
+      "feature_name": "Middleware RBAC Guard",
+      "role": "kepala_sekolah",
+      "status": "PASSED",
+      "duration_ms": 973,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T06:03:31.421Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-principal-rbac-_teacher_assignment_new",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "RBAC Access Control",
+      "test_name": "Penolakan Akses Terlarang [kepala_sekolah] -> /teacher/assignment/new",
+      "feature_name": "Middleware RBAC Guard",
+      "role": "kepala_sekolah",
+      "status": "PASSED",
+      "duration_ms": 901,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T06:03:32.414Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-principal-rbac-_admin_sekolah_dashboard",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "RBAC Access Control",
+      "test_name": "Penolakan Akses Terlarang [kepala_sekolah] -> /admin-sekolah/dashboard",
+      "feature_name": "Middleware RBAC Guard",
+      "role": "kepala_sekolah",
+      "status": "PASSED",
+      "duration_ms": 1009,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T06:03:33.515Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-school_admin-landing",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "Browser Multi-Role",
+      "test_name": "Navigasi Landing Page [admin_sekolah] -> /admin-sekolah/dashboard",
+      "feature_name": "admin_sekolah Dashboard",
+      "role": "admin_sekolah",
+      "status": "FAILED",
+      "duration_ms": 5973,
+      "error_message": "Gagal mendarat di /admin-sekolah/dashboard. Berada di: http://localhost:3000/admin-sekolah/dashboard (Status: 500)",
+      "evidence": {
+        "consoleLogs": [
+          "[CONSOLE_ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+          "[CONSOLE_ERROR] ./node_modules/react-icons/fi/index.mjs:2:1\nModule not found: Can't resolve '../lib/index.mjs'\n  1 | // THIS FILE IS AUTO GENERATED\n> 2 | import { GenIcon } from '../lib/index.mjs';\n    | ^\n  3 | export function FiActivity (props) {\n  4 |   return GenIcon({\"tag\":\"svg\",\"attr\":{\"viewBox\":\"0 0 24 24\",\"fill\":\"none\",\"stroke\":\"currentColor\",\"strokeWidth\":\"2\",\"strokeLinecap\":\"round\",\"strokeLinejoin\":\"round\"},\"child\":[{\"tag\":\"polyline\",\"attr\":{\"points\":\"22 12 18 12 15 21 9 3 6 12 2 12\"},\"child\":[]}]})(props);\n  5 | };\n\nhttps://nextjs.org/docs/messages/module-not-found\n\nImport trace for requested module:\n__barrel_optimize__?names=FiArrowLeft,FiArrowRight,FiBook,FiCheck,FiDownload,FiEye,FiFile,FiFileText,FiLink,FiPlayCircle,FiPlus,FiTrash2,FiUpload,FiVideo,FiX!=!./node_modules/react-icons/fi/index.mjs\n./src/app/components/admin/ModuleManager.tsx"
+        ],
+        "networkErrors": [
+          {
+            "url": "http://localhost:3000/admin-sekolah/dashboard",
+            "method": "GET",
+            "status": 500
+          }
+        ],
+        "screenshotPath": "C:\\Users\\taufi\\Documents\\Projects\\LMS\\qa-data\\screenshots\\school_admin_landing_failed_1793426618766.png"
+      },
+      "created_at": "2026-10-31T06:03:39.800Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-school_admin-_admin_sekolah_dashboard",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "Browser Multi-Role",
+      "test_name": "Akses Halaman Diizinkan [admin_sekolah] -> /admin-sekolah/dashboard",
+      "feature_name": "/admin-sekolah/dashboard",
+      "role": "admin_sekolah",
+      "status": "FAILED",
+      "duration_ms": 1333,
+      "error_message": "Akses diizinkan terblokir atau terlempar ke login: URL saat ini http://localhost:3000/admin-sekolah/dashboard",
+      "evidence": {
+        "screenshotPath": "C:\\Users\\taufi\\Documents\\Projects\\LMS\\qa-data\\screenshots\\school_admin_permitted__admin_sekolah_dashboard_1793426620264.png"
+      },
+      "created_at": "2026-10-31T06:03:41.315Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-school_admin-_admin_sekolah_students",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "Browser Multi-Role",
+      "test_name": "Akses Halaman Diizinkan [admin_sekolah] -> /admin-sekolah/students",
+      "feature_name": "/admin-sekolah/students",
+      "role": "admin_sekolah",
+      "status": "FAILED",
+      "duration_ms": 3381,
+      "error_message": "Akses diizinkan terblokir atau terlempar ke login: URL saat ini http://localhost:3000/admin-sekolah/students",
+      "evidence": {
+        "screenshotPath": "C:\\Users\\taufi\\Documents\\Projects\\LMS\\qa-data\\screenshots\\school_admin_permitted__admin_sekolah_students_1793426623753.png"
+      },
+      "created_at": "2026-10-31T06:03:44.790Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-school_admin-_admin_sekolah_teachers",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "Browser Multi-Role",
+      "test_name": "Akses Halaman Diizinkan [admin_sekolah] -> /admin-sekolah/teachers",
+      "feature_name": "/admin-sekolah/teachers",
+      "role": "admin_sekolah",
+      "status": "FAILED",
+      "duration_ms": 4863,
+      "error_message": "Akses diizinkan terblokir atau terlempar ke login: URL saat ini http://localhost:3000/admin-sekolah/teachers",
+      "evidence": {
+        "screenshotPath": "C:\\Users\\taufi\\Documents\\Projects\\LMS\\qa-data\\screenshots\\school_admin_permitted__admin_sekolah_teachers_1793426628484.png"
+      },
+      "created_at": "2026-10-31T06:03:49.747Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-school_admin-_admin_sekolah_headmaster",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "Browser Multi-Role",
+      "test_name": "Akses Halaman Diizinkan [admin_sekolah] -> /admin-sekolah/headmaster",
+      "feature_name": "/admin-sekolah/headmaster",
+      "role": "admin_sekolah",
+      "status": "FAILED",
+      "duration_ms": 3685,
+      "error_message": "Akses diizinkan terblokir atau terlempar ke login: URL saat ini http://localhost:3000/admin-sekolah/headmaster",
+      "evidence": {
+        "screenshotPath": "C:\\Users\\taufi\\Documents\\Projects\\LMS\\qa-data\\screenshots\\school_admin_permitted__admin_sekolah_headmaster_1793426632398.png"
+      },
+      "created_at": "2026-10-31T06:03:53.523Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-school_admin-_admin_sekolah_settings",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "Browser Multi-Role",
+      "test_name": "Akses Halaman Diizinkan [admin_sekolah] -> /admin-sekolah/settings",
+      "feature_name": "/admin-sekolah/settings",
+      "role": "admin_sekolah",
+      "status": "FAILED",
+      "duration_ms": 3755,
+      "error_message": "Akses diizinkan terblokir atau terlempar ke login: URL saat ini http://localhost:3000/admin-sekolah/settings",
+      "evidence": {
+        "screenshotPath": "C:\\Users\\taufi\\Documents\\Projects\\LMS\\qa-data\\screenshots\\school_admin_permitted__admin_sekolah_settings_1793426636245.png"
+      },
+      "created_at": "2026-10-31T06:03:57.368Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-school_admin-rbac-_dashboard",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "RBAC Access Control",
+      "test_name": "Penolakan Akses Terlarang [admin_sekolah] -> /dashboard",
+      "feature_name": "Middleware RBAC Guard",
+      "role": "admin_sekolah",
+      "status": "PASSED",
+      "duration_ms": 1036,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T06:03:58.508Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-school_admin-rbac-_teacher_dashboard",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "RBAC Access Control",
+      "test_name": "Penolakan Akses Terlarang [admin_sekolah] -> /teacher/dashboard",
+      "feature_name": "Middleware RBAC Guard",
+      "role": "admin_sekolah",
+      "status": "PASSED",
+      "duration_ms": 1044,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T06:03:59.645Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-school_admin-rbac-_kepala_dashboard",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "RBAC Access Control",
+      "test_name": "Penolakan Akses Terlarang [admin_sekolah] -> /kepala/dashboard",
+      "feature_name": "Middleware RBAC Guard",
+      "role": "admin_sekolah",
+      "status": "PASSED",
+      "duration_ms": 998,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T06:04:00.734Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-super_admin-landing",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "Browser Multi-Role",
+      "test_name": "Navigasi Landing Page [admin_langganan] -> /admin/langganan",
+      "feature_name": "admin_langganan Dashboard",
+      "role": "admin_langganan",
+      "status": "FAILED",
+      "duration_ms": 5628,
+      "error_message": "Gagal mendarat di /admin/langganan. Berada di: http://localhost:3000/admin/langganan (Status: 500)",
+      "evidence": {
+        "consoleLogs": [
+          "[CONSOLE_ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+          "[CONSOLE_ERROR] ./node_modules/react-icons/fi/index.mjs:2:1\nModule not found: Can't resolve '../lib/index.mjs'\n  1 | // THIS FILE IS AUTO GENERATED\n> 2 | import { GenIcon } from '../lib/index.mjs';\n    | ^\n  3 | export function FiActivity (props) {\n  4 |   return GenIcon({\"tag\":\"svg\",\"attr\":{\"viewBox\":\"0 0 24 24\",\"fill\":\"none\",\"stroke\":\"currentColor\",\"strokeWidth\":\"2\",\"strokeLinecap\":\"round\",\"strokeLinejoin\":\"round\"},\"child\":[{\"tag\":\"polyline\",\"attr\":{\"points\":\"22 12 18 12 15 21 9 3 6 12 2 12\"},\"child\":[]}]})(props);\n  5 | };\n\nhttps://nextjs.org/docs/messages/module-not-found\n\nImport trace for requested module:\n__barrel_optimize__?names=FiAlertTriangle,FiAward,FiTrendingDown,FiTrendingUp,FiUserCheck,FiUsers!=!./node_modules/react-icons/fi/index.mjs\n./src/app/kepala/dashboard/page.tsx"
+        ],
+        "networkErrors": [
+          {
+            "url": "http://localhost:3000/admin/langganan",
+            "method": "GET",
+            "status": 500
+          }
+        ],
+        "screenshotPath": "C:\\Users\\taufi\\Documents\\Projects\\LMS\\qa-data\\screenshots\\super_admin_landing_failed_1793426645636.png"
+      },
+      "created_at": "2026-10-31T06:04:06.654Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-super_admin-_admin_langganan",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "Browser Multi-Role",
+      "test_name": "Akses Halaman Diizinkan [admin_langganan] -> /admin/langganan",
+      "feature_name": "/admin/langganan",
+      "role": "admin_langganan",
+      "status": "FAILED",
+      "duration_ms": 2034,
+      "error_message": "Akses diizinkan terblokir atau terlempar ke login: URL saat ini http://localhost:3000/admin/langganan",
+      "evidence": {
+        "screenshotPath": "C:\\Users\\taufi\\Documents\\Projects\\LMS\\qa-data\\screenshots\\super_admin_permitted__admin_langganan_1793426647797.png"
+      },
+      "created_at": "2026-10-31T06:04:08.871Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-super_admin-_admin_langganan_schools",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "Browser Multi-Role",
+      "test_name": "Akses Halaman Diizinkan [admin_langganan] -> /admin/langganan/schools",
+      "feature_name": "/admin/langganan/schools",
+      "role": "admin_langganan",
+      "status": "FAILED",
+      "duration_ms": 5576,
+      "error_message": "Akses diizinkan terblokir atau terlempar ke login: URL saat ini http://localhost:3000/admin/langganan/schools",
+      "evidence": {
+        "screenshotPath": "C:\\Users\\taufi\\Documents\\Projects\\LMS\\qa-data\\screenshots\\super_admin_permitted__admin_langganan_schools_1793426653494.png"
+      },
+      "created_at": "2026-10-31T06:04:14.539Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-super_admin-_admin_langganan_subscriptions",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "Browser Multi-Role",
+      "test_name": "Akses Halaman Diizinkan [admin_langganan] -> /admin/langganan/subscriptions",
+      "feature_name": "/admin/langganan/subscriptions",
+      "role": "admin_langganan",
+      "status": "FAILED",
+      "duration_ms": 6871,
+      "error_message": "Akses diizinkan terblokir atau terlempar ke login: URL saat ini http://localhost:3000/admin/langganan/subscriptions",
+      "evidence": {
+        "screenshotPath": "C:\\Users\\taufi\\Documents\\Projects\\LMS\\qa-data\\screenshots\\super_admin_permitted__admin_langganan_subscriptions_1793426660420.png"
+      },
+      "created_at": "2026-10-31T06:04:21.503Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-super_admin-_admin_langganan_packages",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "Browser Multi-Role",
+      "test_name": "Akses Halaman Diizinkan [admin_langganan] -> /admin/langganan/packages",
+      "feature_name": "/admin/langganan/packages",
+      "role": "admin_langganan",
+      "status": "FAILED",
+      "duration_ms": 3676,
+      "error_message": "Akses diizinkan terblokir atau terlempar ke login: URL saat ini http://localhost:3000/admin/langganan/packages",
+      "evidence": {
+        "screenshotPath": "C:\\Users\\taufi\\Documents\\Projects\\LMS\\qa-data\\screenshots\\super_admin_permitted__admin_langganan_packages_1793426664281.png"
+      },
+      "created_at": "2026-10-31T06:04:25.269Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-super_admin-_admin_langganan_payments",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "Browser Multi-Role",
+      "test_name": "Akses Halaman Diizinkan [admin_langganan] -> /admin/langganan/payments",
+      "feature_name": "/admin/langganan/payments",
+      "role": "admin_langganan",
+      "status": "FAILED",
+      "duration_ms": 3153,
+      "error_message": "Akses diizinkan terblokir atau terlempar ke login: URL saat ini http://localhost:3000/admin/langganan/payments",
+      "evidence": {
+        "screenshotPath": "C:\\Users\\taufi\\Documents\\Projects\\LMS\\qa-data\\screenshots\\super_admin_permitted__admin_langganan_payments_1793426667517.png"
+      },
+      "created_at": "2026-10-31T06:04:28.515Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-super_admin-rbac-_dashboard",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "RBAC Access Control",
+      "test_name": "Penolakan Akses Terlarang [admin_langganan] -> /dashboard",
+      "feature_name": "Middleware RBAC Guard",
+      "role": "admin_langganan",
+      "status": "PASSED",
+      "duration_ms": 868,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T06:04:29.473Z"
+    },
+    {
+      "id": "res-run-1793426488332-qtlx4-super_admin-rbac-_attendance",
+      "run_id": "run-1793426488332-qtlx4",
+      "suite_name": "RBAC Access Control",
+      "test_name": "Penolakan Akses Terlarang [admin_langganan] -> /attendance",
+      "feature_name": "Middleware RBAC Guard",
+      "role": "admin_langganan",
+      "status": "PASSED",
+      "duration_ms": 887,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T06:04:30.451Z"
+    }
+  ]
+}

@@ -1,0 +1,357 @@
+{
+  "runId": "run-1793426340463-jig5j",
+  "suiteType": "smoke",
+  "timestamp": "2026-10-31T05:59:49.806Z",
+  "verdict": "SISTEM SIAP PRODUKSI DENGAN CATATAN",
+  "healthScore": 90,
+  "summary": {
+    "totalTests": 20,
+    "passed": 18,
+    "failed": 2,
+    "skipped": 0,
+    "notImplemented": 0
+  },
+  "findingsCount": {
+    "critical": 0,
+    "high": 1,
+    "medium": 0,
+    "low": 0
+  },
+  "findings": [
+    {
+      "id": "find-run-1793426340463-jig5j-api-1793426385191-gis",
+      "run_id": "run-1793426340463-jig5j",
+      "category": "bug",
+      "severity": "HIGH",
+      "title": "Ketidaksesuaian Kontrak API pada /api/teacher/dashboard",
+      "affected_feature": "RBAC API Authorization Guard",
+      "affected_role": "student",
+      "reproduction_steps": "Kirim permintaan HTTP GET ke /api/teacher/dashboard dengan role student",
+      "expected_behavior": "Menghasilkan HTTP Status 401",
+      "actual_behavior": "Expected HTTP 401, received HTTP 200",
+      "error_trace": "Error: Expected HTTP 401, received HTTP 200\n    at ApiRunner.runApiAudit (C:\\Users\\taufi\\Documents\\Projects\\LMS\\qa-engine\\runners\\ApiRunner.ts:222:17)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async QaOrchestrator.executeSuite (C:\\Users\\taufi\\Documents\\Projects\\LMS\\qa-engine\\index.ts:45:24)",
+      "console_logs": [],
+      "network_trace": [],
+      "screenshot_path": null,
+      "root_cause": "Handler rute API atau session validation mengembalikan kode status yang tidak sesuai kontrak",
+      "root_cause_confidence": "80.00",
+      "recommended_fix": "Pastikan respons rute mengembalikan HTTP status 401 saat syarat tidak terpenuhi",
+      "status": "OPEN",
+      "created_at": "2026-10-31T05:59:45.838Z"
+    }
+  ],
+  "results": [
+    {
+      "id": "res-run-1793426340463-jig5j-api-Guard_Unauthenticated___api_teacher_dashboard",
+      "run_id": "run-1793426340463-jig5j",
+      "suite_name": "API Automation Suite",
+      "test_name": "Guard Unauthenticated: /api/teacher/dashboard",
+      "feature_name": "API Authentication Guard",
+      "role": "unauthenticated",
+      "status": "PASSED",
+      "duration_ms": 100,
+      "error_message": null,
+      "evidence": {
+        "status": 401,
+        "durationMs": 100
+      },
+      "created_at": "2026-10-31T05:59:02.474Z"
+    },
+    {
+      "id": "res-run-1793426340463-jig5j-api-Guard_Unauthenticated___api_admin_dashboard",
+      "run_id": "run-1793426340463-jig5j",
+      "suite_name": "API Automation Suite",
+      "test_name": "Guard Unauthenticated: /api/admin/dashboard",
+      "feature_name": "API Authentication Guard",
+      "role": "unauthenticated",
+      "status": "PASSED",
+      "duration_ms": 35,
+      "error_message": null,
+      "evidence": {
+        "status": 401,
+        "durationMs": 35
+      },
+      "created_at": "2026-10-31T05:59:02.604Z"
+    },
+    {
+      "id": "res-run-1793426340463-jig5j-api-Guard_Unauthenticated___api_school_admin_dashboard",
+      "run_id": "run-1793426340463-jig5j",
+      "suite_name": "API Automation Suite",
+      "test_name": "Guard Unauthenticated: /api/school-admin/dashboard",
+      "feature_name": "API Authentication Guard",
+      "role": "unauthenticated",
+      "status": "PASSED",
+      "duration_ms": 41,
+      "error_message": null,
+      "evidence": {
+        "status": 401,
+        "durationMs": 41
+      },
+      "created_at": "2026-10-31T05:59:02.750Z"
+    },
+    {
+      "id": "res-run-1793426340463-jig5j-api-Student_Fetch_Assignments___api_tugas",
+      "run_id": "run-1793426340463-jig5j",
+      "suite_name": "API Automation Suite",
+      "test_name": "Student Fetch Assignments: /api/tugas",
+      "feature_name": "Student Assignment API",
+      "role": "student",
+      "status": "PASSED",
+      "duration_ms": 2694,
+      "error_message": null,
+      "evidence": {
+        "status": 200,
+        "durationMs": 2694
+      },
+      "created_at": "2026-10-31T05:59:05.538Z"
+    },
+    {
+      "id": "res-run-1793426340463-jig5j-api-Student_Attendance_Records___api_attendance_records",
+      "run_id": "run-1793426340463-jig5j",
+      "suite_name": "API Automation Suite",
+      "test_name": "Student Attendance Records: /api/attendance/records",
+      "feature_name": "Student Attendance API",
+      "role": "student",
+      "status": "PASSED",
+      "duration_ms": 2005,
+      "error_message": null,
+      "evidence": {
+        "status": 200,
+        "durationMs": 2005
+      },
+      "created_at": "2026-10-31T05:59:07.636Z"
+    },
+    {
+      "id": "res-run-1793426340463-jig5j-api-Student_Tryout_List___api_tryout",
+      "run_id": "run-1793426340463-jig5j",
+      "suite_name": "API Automation Suite",
+      "test_name": "Student Tryout List: /api/tryout",
+      "feature_name": "Student Tryout CBT API",
+      "role": "student",
+      "status": "PASSED",
+      "duration_ms": 2296,
+      "error_message": null,
+      "evidence": {
+        "status": 200,
+        "durationMs": 2296
+      },
+      "created_at": "2026-10-31T05:59:10.052Z"
+    },
+    {
+      "id": "res-run-1793426340463-jig5j-api-Teacher_Dashboard_Stats___api_teacher_dashboard",
+      "run_id": "run-1793426340463-jig5j",
+      "suite_name": "API Automation Suite",
+      "test_name": "Teacher Dashboard Stats: /api/teacher/dashboard",
+      "feature_name": "Teacher Dashboard API",
+      "role": "teacher",
+      "status": "PASSED",
+      "duration_ms": 3397,
+      "error_message": null,
+      "evidence": {
+        "status": 200,
+        "durationMs": 3397
+      },
+      "created_at": "2026-10-31T05:59:13.543Z"
+    },
+    {
+      "id": "res-run-1793426340463-jig5j-api-Teacher_Students_Roster___api_teacher_students",
+      "run_id": "run-1793426340463-jig5j",
+      "suite_name": "API Automation Suite",
+      "test_name": "Teacher Students Roster: /api/teacher/students",
+      "feature_name": "Teacher Students API",
+      "role": "teacher",
+      "status": "PASSED",
+      "duration_ms": 2772,
+      "error_message": null,
+      "evidence": {
+        "status": 200,
+        "durationMs": 2772
+      },
+      "created_at": "2026-10-31T05:59:16.415Z"
+    },
+    {
+      "id": "res-run-1793426340463-jig5j-api-Teacher_Quizzes_List___api_teacher_quizzes",
+      "run_id": "run-1793426340463-jig5j",
+      "suite_name": "API Automation Suite",
+      "test_name": "Teacher Quizzes List: /api/teacher/quizzes",
+      "feature_name": "Teacher Quiz Management API",
+      "role": "teacher",
+      "status": "PASSED",
+      "duration_ms": 5896,
+      "error_message": null,
+      "evidence": {
+        "status": 200,
+        "durationMs": 5896
+      },
+      "created_at": "2026-10-31T05:59:22.420Z"
+    },
+    {
+      "id": "res-run-1793426340463-jig5j-api-School_Admin_Dashboard___api_school_admin_dashboard",
+      "run_id": "run-1793426340463-jig5j",
+      "suite_name": "API Automation Suite",
+      "test_name": "School Admin Dashboard: /api/school-admin/dashboard",
+      "feature_name": "School Admin Dashboard API",
+      "role": "admin_sekolah",
+      "status": "PASSED",
+      "duration_ms": 4630,
+      "error_message": null,
+      "evidence": {
+        "status": 200,
+        "durationMs": 4630
+      },
+      "created_at": "2026-10-31T05:59:27.145Z"
+    },
+    {
+      "id": "res-run-1793426340463-jig5j-api-School_Admin_Students___api_school_admin_students",
+      "run_id": "run-1793426340463-jig5j",
+      "suite_name": "API Automation Suite",
+      "test_name": "School Admin Students: /api/school-admin/students",
+      "feature_name": "School Admin Student Registry API",
+      "role": "admin_sekolah",
+      "status": "PASSED",
+      "duration_ms": 1915,
+      "error_message": null,
+      "evidence": {
+        "status": 200,
+        "durationMs": 1915
+      },
+      "created_at": "2026-10-31T05:59:29.154Z"
+    },
+    {
+      "id": "res-run-1793426340463-jig5j-api-Super_Admin_Dashboard___api_admin_dashboard",
+      "run_id": "run-1793426340463-jig5j",
+      "suite_name": "API Automation Suite",
+      "test_name": "Super Admin Dashboard: /api/admin/dashboard",
+      "feature_name": "Super Admin Dashboard API",
+      "role": "admin_langganan",
+      "status": "PASSED",
+      "duration_ms": 2216,
+      "error_message": null,
+      "evidence": {
+        "status": 200,
+        "durationMs": 2216
+      },
+      "created_at": "2026-10-31T05:59:31.465Z"
+    },
+    {
+      "id": "res-run-1793426340463-jig5j-api-Super_Admin_Schools_List___api_admin_schools",
+      "run_id": "run-1793426340463-jig5j",
+      "suite_name": "API Automation Suite",
+      "test_name": "Super Admin Schools List: /api/admin/schools",
+      "feature_name": "School Licensing Management API",
+      "role": "admin_langganan",
+      "status": "PASSED",
+      "duration_ms": 2124,
+      "error_message": null,
+      "evidence": {
+        "status": 200,
+        "durationMs": 2124
+      },
+      "created_at": "2026-10-31T05:59:33.684Z"
+    },
+    {
+      "id": "res-run-1793426340463-jig5j-api-Super_Admin_Packages___api_admin_packages",
+      "run_id": "run-1793426340463-jig5j",
+      "suite_name": "API Automation Suite",
+      "test_name": "Super Admin Packages: /api/admin/packages",
+      "feature_name": "Subscription Package API",
+      "role": "admin_langganan",
+      "status": "PASSED",
+      "duration_ms": 2239,
+      "error_message": null,
+      "evidence": {
+        "status": 200,
+        "durationMs": 2239
+      },
+      "created_at": "2026-10-31T05:59:36.015Z"
+    },
+    {
+      "id": "res-run-1793426340463-jig5j-api-Super_Admin_Payments___api_admin_payments",
+      "run_id": "run-1793426340463-jig5j",
+      "suite_name": "API Automation Suite",
+      "test_name": "Super Admin Payments: /api/admin/payments",
+      "feature_name": "Billing & Payments API",
+      "role": "admin_langganan",
+      "status": "PASSED",
+      "duration_ms": 2192,
+      "error_message": null,
+      "evidence": {
+        "status": 200,
+        "durationMs": 2192
+      },
+      "created_at": "2026-10-31T05:59:38.302Z"
+    },
+    {
+      "id": "res-run-1793426340463-jig5j-api-Cross_Role_Forbidden__Student_trying_to_access__api_teacher_dashboard",
+      "run_id": "run-1793426340463-jig5j",
+      "suite_name": "API Automation Suite",
+      "test_name": "Cross-Role Forbidden: Student trying to access /api/teacher/dashboard",
+      "feature_name": "RBAC API Authorization Guard",
+      "role": "student",
+      "status": "FAILED",
+      "duration_ms": 7329,
+      "error_message": "Expected HTTP 401, received HTTP 200",
+      "evidence": {},
+      "created_at": "2026-10-31T05:59:45.736Z"
+    },
+    {
+      "id": "res-run-1793426340463-jig5j-api-Cross_Role_Forbidden__Teacher_trying_to_access__api_admin_dashboard",
+      "run_id": "run-1793426340463-jig5j",
+      "suite_name": "API Automation Suite",
+      "test_name": "Cross-Role Forbidden: Teacher trying to access /api/admin/dashboard",
+      "feature_name": "RBAC API Authorization Guard",
+      "role": "teacher",
+      "status": "PASSED",
+      "duration_ms": 443,
+      "error_message": null,
+      "evidence": {
+        "status": 401,
+        "durationMs": 443
+      },
+      "created_at": "2026-10-31T05:59:46.375Z"
+    },
+    {
+      "id": "perf-run-1793426340463-jig5j-api-latency",
+      "run_id": "run-1793426340463-jig5j",
+      "suite_name": "Performance & Stress Suite",
+      "test_name": "Latensi Endpoint Otentikasi",
+      "feature_name": "API Latency Benchmark",
+      "role": "all",
+      "status": "FAILED",
+      "duration_ms": 2364,
+      "error_message": "Degradasi Performa: Waktu respons API (2364ms) melampaui batas toleransi 1500ms",
+      "evidence": {},
+      "created_at": "2026-10-31T05:59:48.831Z"
+    },
+    {
+      "id": "perf-run-1793426340463-jig5j-db-query-speed",
+      "run_id": "run-1793426340463-jig5j",
+      "suite_name": "Performance & Stress Suite",
+      "test_name": "Waktu Eksekusi Kueri Database: 709ms",
+      "feature_name": "PostgreSQL DB Connection Pool",
+      "role": "system",
+      "status": "PASSED",
+      "duration_ms": 709,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T05:59:49.631Z"
+    },
+    {
+      "id": "perf-run-1793426340463-jig5j-memory-usage",
+      "run_id": "run-1793426340463-jig5j",
+      "suite_name": "Performance & Stress Suite",
+      "test_name": "Konsumsi Memori Node.js Process: Heap 53 MB",
+      "feature_name": "Server Resource Profiler",
+      "role": "system",
+      "status": "PASSED",
+      "duration_ms": 10,
+      "error_message": null,
+      "evidence": {
+        "rssMb": 120,
+        "heapUsedMb": 53,
+        "heapTotalMb": 55
+      },
+      "created_at": "2026-10-31T05:59:49.722Z"
+    }
+  ]
+}

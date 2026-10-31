@@ -1,0 +1,60 @@
+{
+  "runId": "run-1793426470558-admk9",
+  "suiteType": "ai_microservice",
+  "timestamp": "2026-10-31T06:01:12.826Z",
+  "verdict": "MEMENUHI STANDAR KELAYAKAN ENTERPRISE (PASSED)",
+  "healthScore": 100,
+  "summary": {
+    "totalTests": 2,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "notImplemented": 0
+  },
+  "findingsCount": {
+    "critical": 0,
+    "high": 0,
+    "medium": 0,
+    "low": 0
+  },
+  "findings": [],
+  "results": [
+    {
+      "id": "ai-run-1793426470558-admk9-validation-bad-input",
+      "run_id": "run-1793426470558-admk9",
+      "suite_name": "AI Microservice Suite",
+      "test_name": "Validasi Input Malformed: Penolakan Objek Non-Array (HTTP 400)",
+      "feature_name": "Flask Early Warning Service",
+      "role": "system",
+      "status": "PASSED",
+      "duration_ms": 50,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T06:01:12.585Z"
+    },
+    {
+      "id": "ai-run-1793426470558-admk9-clustering-accuracy",
+      "run_id": "run-1793426470558-admk9",
+      "suite_name": "AI Microservice Suite",
+      "test_name": "Akurasi Klasifikasi Risiko & Rekomendasi K-Means / Rule-Based",
+      "feature_name": "AI Risk Engine",
+      "role": "system",
+      "status": "PASSED",
+      "duration_ms": 59,
+      "error_message": null,
+      "evidence": {
+        "metadata": {
+          "watch": 1,
+          "normal": 1,
+          "urgent": 1,
+          "warning": 1,
+          "total_siswa": 4
+        },
+        "latencyMs": 59,
+        "normalCount": 1,
+        "urgentCount": 1
+      },
+      "created_at": "2026-10-31T06:01:12.746Z"
+    }
+  ]
+}

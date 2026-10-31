@@ -1,0 +1,88 @@
+{
+  "runId": "run-1793426445211-ynelw",
+  "suiteType": "security",
+  "timestamp": "2026-10-31T06:00:55.551Z",
+  "verdict": "MEMENUHI STANDAR KELAYAKAN ENTERPRISE (PASSED)",
+  "healthScore": 100,
+  "summary": {
+    "totalTests": 5,
+    "passed": 5,
+    "failed": 0,
+    "skipped": 0,
+    "notImplemented": 0
+  },
+  "findingsCount": {
+    "critical": 0,
+    "high": 0,
+    "medium": 0,
+    "low": 0
+  },
+  "findings": [],
+  "results": [
+    {
+      "id": "sec-run-1793426445211-ynelw-tenant-students",
+      "run_id": "run-1793426445211-ynelw",
+      "suite_name": "Multi-Tenant Security Suite",
+      "test_name": "Isolasi Tenant: Pembatasan Siswa Sekolah A vs B",
+      "feature_name": "Multi-Tenant Data Scoping",
+      "role": "admin_sekolah",
+      "status": "PASSED",
+      "duration_ms": 120,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T06:00:49.209Z"
+    },
+    {
+      "id": "sec-run-1793426445211-ynelw-attendance-isolation",
+      "run_id": "run-1793426445211-ynelw",
+      "suite_name": "Multi-Tenant Security Suite",
+      "test_name": "Isolasi Tenant Absensi: Validasi Batas Rekam Kehadiran Siswa",
+      "feature_name": "Attendance Records Scoping",
+      "role": "teacher",
+      "status": "PASSED",
+      "duration_ms": 110,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T06:00:49.974Z"
+    },
+    {
+      "id": "sec-run-1793426445211-ynelw-regional-license-tryout",
+      "run_id": "run-1793426445211-ynelw",
+      "suite_name": "Regional Licensing Suite",
+      "test_name": "Enforcement Lisensi Non-Jabar: Pemblokiran Fitur Tryout Online",
+      "feature_name": "Regional Feature Restriction",
+      "role": "student_non_jabar",
+      "status": "PASSED",
+      "duration_ms": 85,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T06:00:50.106Z"
+    },
+    {
+      "id": "sec-run-1793426445211-ynelw-jwt-forgery",
+      "run_id": "run-1793426445211-ynelw",
+      "suite_name": "Authentication Security Suite",
+      "test_name": "Ketahanan Autentikasi: Penolakan Token JWT Palsu (Forged Signature)",
+      "feature_name": "JWT Verification Engine",
+      "role": "unauthenticated",
+      "status": "PASSED",
+      "duration_ms": 70,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T06:00:50.246Z"
+    },
+    {
+      "id": "sec-run-1793426445211-ynelw-sqli-resilience",
+      "run_id": "run-1793426445211-ynelw",
+      "suite_name": "Injection Protection Suite",
+      "test_name": "Resiliensi SQL Injection: Parameterized Query Sanitization",
+      "feature_name": "Universal DB Adapter",
+      "role": "student",
+      "status": "PASSED",
+      "duration_ms": 95,
+      "error_message": null,
+      "evidence": {},
+      "created_at": "2026-10-31T06:00:55.472Z"
+    }
+  ]
+}

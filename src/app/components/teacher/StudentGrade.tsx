@@ -141,7 +141,7 @@ export default function StudentGradeComponent({ data }: StudentGradeProps) {
                 domain={[0, 100]}
               />
               <Tooltip
-                content={({ active, payload, label }) => {
+                content={({ active, payload, label }: any) => {
                   if (active && payload && payload.length) {
                     return (
                       <div className="bg-white/95 border border-slate-200 p-4 rounded-xl shadow-lg">
@@ -168,7 +168,7 @@ export default function StudentGradeComponent({ data }: StudentGradeProps) {
               <Legend
                 onClick={handleLegendClick}
                 wrapperStyle={{ paddingTop: '20px' }}
-                formatter={(value, entry: any) => {
+                formatter={(value: any, entry: any) => {
                   const isActive = !activeSubject || activeSubject === value;
                   return (
                     <span style={{

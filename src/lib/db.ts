@@ -137,7 +137,7 @@ if (isPostgres) {
                     return normalizePgResult(res);
                 },
                 async execute(sql: string, values: any[] = []) {
-                    return this.query(sql, values);
+                    return (this as UniversalConnection).query(sql, values);
                 },
                 async beginTransaction() {
                     await client.query('BEGIN');

@@ -43,3 +43,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# python
+__pycache__/
+*.py[cod]
+
+# qa artifacts
+/qa-data/screenshots/
+/qa-data/traces/
+/qa-data/local-db/

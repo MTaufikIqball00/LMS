@@ -6,6 +6,7 @@ import type { UserRole, UserSession } from "../src/app/types/attendance";
 
 // --- Path Definitions ---
 const PUBLIC_PATHS = ["/login", "/register", "/forgot-password", "/api/login"];
+const QA_PATHS = ["/qa", "/api/qa"];
 const TEACHER_PATHS = ["/teacher", "/api/teacher"];
 const ADMIN_LANGGANAN_PATHS = ["/admin/langganan", "/api/admin/langganan"];
 const HEADMASTER_PATHS = ["/kepala", "/api/kepala"];
@@ -127,7 +128,7 @@ export async function middleware(request: NextRequest) {
   }
   else {
     // If an unauthenticated user tries to access any protected path:
-    if (!isPublicPath && pathname !== "/") {
+    if (!isPublicPath && pathname !== "/" && !QA_PATHS.some((path) => pathname.startsWith(path))) {
       // For API routes, return 401 Unauthorized JSON instead of HTML redirect
       if (pathname.startsWith("/api/")) {
         return NextResponse.json(

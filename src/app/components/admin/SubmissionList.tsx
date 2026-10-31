@@ -128,7 +128,7 @@ export default function SubmissionList({ assignmentId }: SubmissionListProps) {
 
   const downloadFile = (submission: Submission) => {
     try {
-      // ✅ Alternative fix: Convert Uint8Array to regular array first
+      if (!submission.data) return;
       const arrayBuffer = new ArrayBuffer(submission.data.length);
       const view = new Uint8Array(arrayBuffer);
       view.set(submission.data);

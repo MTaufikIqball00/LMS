@@ -1,10 +1,16 @@
+import sys
+import os
+
+if sys.platform == "win32" and hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+    sys.stderr.reconfigure(encoding="utf-8")
+
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 import joblib
-import os
 from utils import apply_early_warning_system, generate_recommendations
 
 app = Flask(__name__)
